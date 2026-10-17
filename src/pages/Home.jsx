@@ -1,84 +1,78 @@
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
+
+const sections = [
+  { id: 'top', title: 'Halcyon', subtitle: 'The Apex of Electric Hypercar Engineering' },
+  { id: 'models', title: 'Models', subtitle: 'Bespoke Aerodynamic Monocoques' },
+  { id: 'design', title: 'Design', subtitle: 'Form Perfected Through Fluid Dynamics' },
+  { id: 'performance', title: 'Performance', subtitle: 'Sub-Two Second Acceleration & Active Vectoring' },
+  { id: 'colors', title: 'Colors', subtitle: 'Five Bespoke Signature Finishes' },
+];
 
 export default function Home() {
-  const { user, signOut } = useAuth();
-
   useEffect(() => {
-    document.title = 'Halcyon';
+    document.title = 'Halcyon | Hypercar';
   }, []);
 
-  const firstName = user?.displayName ? user.displayName.split(' ')[0] : 'Member';
-
   return (
-    <main className="placeholder-page">
-      {/* Temporary top-right authenticated user status */}
-      {user && (
-        <aside className="user-home-badge" aria-label="Account details">
-          {user.photoURL ? (
-            <img
-              src={user.photoURL}
-              alt={`${user.displayName || 'User'} profile avatar`}
-              className="user-avatar-img"
-              referrerPolicy="no-referrer"
-            />
-          ) : (
-            <div
-              className="user-avatar-img"
-              style={{
-                backgroundColor: 'var(--line)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '0.75rem',
-                color: 'var(--text)',
-              }}
-            >
-              {firstName.charAt(0)}
-            </div>
-          )}
-          <span className="user-display-name">{firstName}</span>
-          <button
-            type="button"
-            className="user-signout-btn"
-            onClick={signOut}
-            aria-label="Sign out of Halcyon"
-          >
-            Sign out
-          </button>
-        </aside>
-      )}
-
-      {/* Unauthenticated subtle link to access login */}
-      {!user && (
-        <aside
+    <main id="main-content" style={{ width: '100%', backgroundColor: 'var(--bg)' }}>
+      {sections.map((section, index) => (
+        <section
+          key={section.id}
+          id={section.id}
           style={{
-            position: 'fixed',
-            top: 'clamp(1rem, 0.8rem + 1vw, 1.75rem)',
-            right: 'clamp(1rem, 0.8rem + 1vw, 1.75rem)',
-            zIndex: 100,
+            minHeight: '100svh',
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'var(--bg)',
+            color: 'var(--text)',
+            borderBottom: index < sections.length - 1 ? '1px solid var(--line)' : 'none',
+            padding: 'clamp(2rem, 1.5rem + 2vw, 4rem) clamp(1rem, 0.8rem + 1.5vw, 2.5rem)',
+            textAlign: 'center',
+            position: 'relative',
           }}
         >
-          <Link
-            to="/login"
+          <span
             style={{
-              fontSize: '0.8125rem',
-              color: 'var(--muted)',
-              letterSpacing: '0.05em',
+              fontSize: 'clamp(0.75rem, 0.7rem + 0.2vw, 0.875rem)',
+              letterSpacing: '0.28em',
               textTransform: 'uppercase',
-              border: '1px solid var(--line)',
-              borderRadius: '9999px',
-              padding: '0.35rem 0.85rem',
-              transition: 'color 0.2s ease, border-color 0.2s ease',
+              color: 'var(--muted)',
+              marginBottom: '1rem',
+              fontWeight: 500,
             }}
           >
-            Access / Sign In
-          </Link>
-        </aside>
-      )}
+            0{index + 1} / {section.id.toUpperCase()}
+          </span>
 
-      <h1>Home</h1>
+          <h2
+            style={{
+              fontSize: 'clamp(2.75rem, 2rem + 4vw, 6.5rem)',
+              fontWeight: 600,
+              letterSpacing: '-0.035em',
+              color: 'var(--text)',
+              lineHeight: 1.06,
+              marginBottom: '1.25rem',
+            }}
+          >
+            {section.title}
+          </h2>
+
+          <p
+            style={{
+              fontSize: 'clamp(0.95rem, 0.9rem + 0.25vw, 1.25rem)',
+              color: 'var(--muted)',
+              maxWidth: '560px',
+              lineHeight: 1.5,
+              fontWeight: 400,
+            }}
+          >
+            {section.subtitle}
+          </p>
+        </section>
+      ))}
     </main>
   );
 }
