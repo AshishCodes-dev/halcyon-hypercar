@@ -5,6 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>Halcyon</title>
+    <script>
+      (function() {
+        try {
+          var saved = localStorage.getItem('halcyon_accent_color');
+          var colors = {
+            green: '#2BFF88',
+            red: '#FF2A3D',
+            orange: '#FF7A1A',
+            blue: '#2D7BFF',
+            violet: '#9B5CFF'
+          };
+          if (saved && colors[saved]) {
+            document.documentElement.style.setProperty('--accent', colors[saved]);
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

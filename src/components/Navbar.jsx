@@ -4,6 +4,8 @@ import { motion, AnimatePresence, useScroll, useSpring, useReducedMotion } from 
 import { useAuth } from '../hooks/useAuth';
 import { scrollToTarget, lockScroll, unlockScroll } from '../hooks/useLenis';
 import HalcyonMark from './HalcyonMark';
+import AccentSwitcher from './AccentSwitcher';
+import ReserveButton from './ReserveButton';
 import './Navbar.css';
 
 const navLinks = [
@@ -26,24 +28,27 @@ export default function Navbar() {
   // Active section for breadcrumb & links
   const [activeSection, setActiveSection] = useState('Home');
   const [hoveredLink, setHoveredLink] = useState(null);
+  const [isBrandHovered, setIsBrandHovered] = useState(false);
 
   // Scroll states
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const lastScrollY = useRef(0);
 
-  // Menu & dropdown states
+  // Menu, dropdown, & ripple effects
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAvatarOpen, setIsAvatarOpen] = useState(false);
   const [avatarImgError, setAvatarImgError] = useState(false);
+  const [ripple, setRipple] = useState(null);
 
   // Refs for accessibility & focus trapping
   const hamburgerRef = useRef(null);
   const mobileMenuRef = useRef(null);
   const avatarDropdownRef = useRef(null);
   const avatarBtnRef = useRef(null);
+  const headerRef = useRef(null);
 
-  // Smooth scroll progress line
+  // Smooth scroll progress line with spring physics
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 220,
@@ -85,10 +90,10 @@ export default function Navbar() {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      // Scrolled state (> 24px)
+      // Scrolled state (> 24px triggers capsule on desktop)
       setIsScrolled(currentScrollY > 24);
 
-      // Hide / show logic
+      // Hide / show logic past 160px
       if (isMobileMenuOpen || isAvatarOpen) {
         setIsVisible(true);
       } else if (currentScrollY > 160) {
@@ -197,6 +202,19 @@ export default function Navbar() {
     navigate('/login');
   };
 
+  const handleRipple = ({ color, x, y }) => {
+    if (shouldReduceMotion) return;
+    if (headerRef.current) {
+      const rect = headerRef.current.getBoundingClientRect();
+      setRipple({
+        color,
+        relX: x - rect.left,
+        relY: y - rect.top,
+        id: Date.now(),
+      });
+    }
+  };
+
   const userInitial = user?.displayName
     ? user.displayName.charAt(0).toUpperCase()
     : user?.email
@@ -206,6 +224,22 @@ export default function Navbar() {
   const userFirstName = user?.displayName
     ? user.displayName.split(' ')[0]
     : 'Client';
+
+  const easeLuxury = [0.16, 1, 0.3, 1];
+
+  // Page load link stagger variants
+  const linkItemVariants = {
+    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : -8 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.45,
+        delay: shouldReduceMotion ? 0 : 0.38 + i * 0.06,
+        ease: easeLuxury,
+      },
+    }),
+  };
 
   return (
     <>
@@ -218,20 +252,42 @@ export default function Navbar() {
         Skip to content
       </a>
 
-      {/* Main Header Bar */}
+      {/* Main Header Bar (slides down with fade on load) */}
       <motion.header
-        className={`navbar-header ${isScrolled ? 'navbar-scrolled' : ''}`}
-        initial={{ y: 0 }}
+        ref={headerRef}
+        className={`navbar-header ${isScrolled ? 'navbar-capsule' : ''}`}
+        initial={{ y: shouldReduceMotion ? 0 : -40, opacity: 0 }}
         animate={{
-          y: shouldReduceMotion ? 0 : isVisible ? 0 : '-100%',
-          opacity: shouldReduceMotion ? (isVisible ? 1 : 0) : 1,
+          y: shouldReduceMotion ? 0 : isVisible ? 0 : -100,
+          opacity: shouldReduceMotion ? (isVisible ? 1 : 0) : isVisible ? 1 : 0,
         }}
         transition={{
-          duration: shouldReduceMotion ? 0.2 : 0.32,
-          ease: [0.16, 1, 0.3, 1],
+          duration: shouldReduceMotion ? 0.2 : 0.55,
+          ease: easeLuxury,
         }}
         role="banner"
       >
+        {/* Satisfying accent ripple across navbar */}
+        <AnimatePresence>
+          {ripple && (
+            <motion.span
+              key={ripple.id}
+              className="navbar-accent-ripple"
+              style={{
+                left: ripple.relX,
+                top: ripple.relY,
+                backgroundColor: ripple.color,
+              }}
+              initial={{ scale: 0, opacity: 0.28 }}
+              animate={{ scale: 28, opacity: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.6, ease: easeLuxury }}
+              onAnimationComplete={() => setRipple(null)}
+              aria-hidden="true"
+            />
+          )}
+        </AnimatePresence>
+
         <div className="navbar-container">
           {/* ================= ZONE 1: LEFT ================= */}
           <div className="navbar-left">
@@ -239,9 +295,11 @@ export default function Navbar() {
               href="#top"
               className="navbar-brand-link"
               onClick={(e) => handleNavClick(e, 'top')}
+              onMouseEnter={() => setIsBrandHovered(true)}
+              onMouseLeave={() => setIsBrandHovered(false)}
               aria-label="Halcyon Homepage"
             >
-              <HalcyonMark />
+              <HalcyonMark isHovered={isBrandHovered} />
             </a>
 
             <span className="navbar-breadcrumb-divider" aria-hidden="true">
@@ -270,8 +328,8 @@ export default function Navbar() {
                       : { y: -9, opacity: 0, filter: 'blur(4px)' }
                   }
                   transition={{
-                    duration: 0.26,
-                    ease: [0.16, 1, 0.3, 1],
+                    duration: 0.28,
+                    ease: easeLuxury,
                   }}
                 >
                   {activeSection}
@@ -286,11 +344,18 @@ export default function Navbar() {
               className="navbar-links-list"
               onMouseLeave={() => setHoveredLink(null)}
             >
-              {navLinks.map((link) => {
+              {navLinks.map((link, idx) => {
                 const isActive = activeSection === link.label;
 
                 return (
-                  <li key={link.id} className="navbar-link-item">
+                  <motion.li
+                    key={link.id}
+                    className="navbar-link-item"
+                    custom={idx}
+                    initial="hidden"
+                    animate="visible"
+                    variants={linkItemVariants}
+                  >
                     <a
                       href={`#${link.id}`}
                       className={`navbar-link ${isActive ? 'navbar-link-active' : ''}`}
@@ -330,7 +395,7 @@ export default function Navbar() {
                         />
                       )}
                     </a>
-                  </li>
+                  </motion.li>
                 );
               })}
             </ul>
@@ -338,14 +403,11 @@ export default function Navbar() {
 
           {/* ================= ZONE 3: RIGHT ================= */}
           <div className="navbar-right">
-            {/* Reserve Pill Button */}
-            <a
-              href="#colors"
-              className="navbar-reserve-btn"
-              onClick={(e) => handleNavClick(e, 'colors')}
-            >
-              Reserve
-            </a>
+            {/* Desktop Accent Switcher */}
+            <AccentSwitcher onAccentChange={handleRipple} />
+
+            {/* Reserve Button */}
+            <ReserveButton onClick={(e) => handleNavClick(e, 'colors')} />
 
             {/* Auth State: Sign in OR Avatar Dropdown */}
             {user ? (
@@ -384,7 +446,7 @@ export default function Navbar() {
                       initial={{ opacity: 0, scale: 0.94, y: 8 }}
                       animate={{ opacity: 1, scale: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.96, y: 6 }}
-                      transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                      transition={{ duration: 0.2, ease: easeLuxury }}
                     >
                       <div className="navbar-dropdown-header">
                         <span className="navbar-dropdown-name">
@@ -431,12 +493,15 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* 1px Accent Scroll Progress Line */}
-        <motion.div
-          className="navbar-scroll-progress"
-          style={{ scaleX }}
-          aria-hidden="true"
-        />
+        {/* 1px Bottom Edge Gradient Line with soft glow beneath */}
+        <div className="navbar-bottom-glow-edge" aria-hidden="true" />
+
+        {/* 1px Accent Scroll Progress Line with glowing head */}
+        <div className="navbar-progress-track" aria-hidden="true">
+          <motion.div className="navbar-scroll-progress" style={{ scaleX }}>
+            <span className="navbar-progress-head" />
+          </motion.div>
+        </div>
       </motion.header>
 
       {/* ================= FULLSCREEN MOBILE MENU ================= */}
@@ -484,7 +549,7 @@ export default function Navbar() {
                       transition={{
                         duration: 0.45,
                         delay: shouldReduceMotion ? 0 : 0.15 + idx * 0.07,
-                        ease: [0.16, 1, 0.3, 1],
+                        ease: easeLuxury,
                       }}
                     >
                       <a
@@ -501,7 +566,7 @@ export default function Navbar() {
                 </ul>
               </nav>
 
-              {/* Mobile Actions: Reserve + Auth */}
+              {/* Mobile Actions: Accent Switcher + Reserve + Auth */}
               <motion.div
                 className="mobile-menu-actions"
                 initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
@@ -510,16 +575,20 @@ export default function Navbar() {
                 transition={{
                   duration: 0.4,
                   delay: shouldReduceMotion ? 0 : 0.45,
-                  ease: [0.16, 1, 0.3, 1],
+                  ease: easeLuxury,
                 }}
               >
-                <a
-                  href="#colors"
-                  className="mobile-reserve-btn"
+                {/* Mobile Accent Switcher */}
+                <div className="mobile-switcher-wrapper">
+                  <span className="mobile-switcher-label">Signature Finish</span>
+                  <AccentSwitcher isMobile={true} onAccentChange={handleRipple} />
+                </div>
+
+                <ReserveButton
+                  isMobile={true}
+                  label="Reserve Your Halcyon"
                   onClick={(e) => handleNavClick(e, 'colors')}
-                >
-                  Reserve Your Halcyon
-                </a>
+                />
 
                 {user ? (
                   <div className="mobile-user-status">

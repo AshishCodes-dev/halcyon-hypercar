@@ -1,0 +1,153 @@
+.halcyon-reserve-pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 44px;
+  min-height: 44px;
+  padding: 0 8px 0 20px;
+  background-color: var(--accent);
+  color: #000000;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+  overflow: hidden;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+  gap: 0.75rem;
+  box-shadow: 0 4px 16px -2px color-mix(in srgb, var(--accent) 35%, transparent);
+  transition: box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, box-shadow;
+}
+
+.halcyon-reserve-pill:hover,
+.halcyon-reserve-pill.is-hovered {
+  box-shadow: 0 0 28px color-mix(in srgb, var(--accent) 55%, transparent),
+              0 6px 20px -2px color-mix(in srgb, var(--accent) 40%, transparent);
+}
+
+.halcyon-reserve-pill:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Idle Pulse Ring */
+.reserve-pulse-ring {
+  position: absolute;
+  inset: -1px;
+  border-radius: 9999px;
+  border: 1.5px solid var(--accent);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Diagonal Sheen Beam */
+.reserve-sweep-beam {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 45%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.8) 50%,
+    transparent 100%
+  );
+  transform: skewX(-25deg);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Rolling Text Mask */
+.reserve-label-mask {
+  display: inline-block;
+  overflow: hidden;
+  height: 1.25em;
+  position: relative;
+  z-index: 1;
+}
+
+.reserve-label-roll {
+  display: flex;
+  flex-direction: column;
+}
+
+.reserve-text-line {
+  display: block;
+  height: 1.25em;
+  line-height: 1.25em;
+  color: #000000;
+  white-space: nowrap;
+}
+
+/* 30px Black Circle */
+.reserve-icon-circle {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  min-height: 30px;
+  background-color: #000000;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.reserve-arrow-svg {
+  color: var(--accent);
+  transition: color 0.3s ease;
+}
+
+/* Screen reader utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Mobile Full-width Mode */
+.halcyon-reserve-pill.is-mobile {
+  width: 100%;
+  height: 56px;
+  min-height: 56px;
+  font-size: 1rem;
+  padding: 0 12px 0 24px;
+}
+
+.halcyon-reserve-pill.is-mobile .reserve-icon-circle {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  min-height: 38px;
+}
+
+.halcyon-reserve-pill.is-mobile .reserve-arrow-svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  .halcyon-reserve-pill {
+    transition: none !important;
+  }
+
+  .reserve-pulse-ring,
+  .reserve-sweep-beam {
+    display: none !important;
+  }
+}

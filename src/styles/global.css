@@ -17,7 +17,7 @@ html {
   min-height: 100svh;
   background-color: var(--bg);
   color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-family: var(--font-body);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -30,6 +30,7 @@ body {
   min-height: 100svh;
   background-color: var(--bg);
   color: var(--text);
+  font-family: var(--font-body);
   line-height: 1.5;
   overflow-x: hidden;
   position: relative;

@@ -36,12 +36,13 @@ export default function Home() {
         >
           <span
             style={{
+              fontFamily: 'var(--font-body)',
               fontSize: 'clamp(0.75rem, 0.7rem + 0.2vw, 0.875rem)',
               letterSpacing: '0.28em',
               textTransform: 'uppercase',
               color: 'var(--muted)',
               marginBottom: '1rem',
-              fontWeight: 500,
+              fontWeight: 600,
             }}
           >
             0{index + 1} / {section.id.toUpperCase()}
@@ -49,9 +50,10 @@ export default function Home() {
 
           <h2
             style={{
+              fontFamily: 'var(--font-body)',
               fontSize: 'clamp(2.75rem, 2rem + 4vw, 6.5rem)',
-              fontWeight: 600,
-              letterSpacing: '-0.035em',
+              fontWeight: 750,
+              letterSpacing: '-0.04em',
               color: 'var(--text)',
               lineHeight: 1.06,
               marginBottom: '1.25rem',
@@ -62,6 +64,7 @@ export default function Home() {
 
           <p
             style={{
+              fontFamily: 'var(--font-body)',
               fontSize: 'clamp(0.95rem, 0.9rem + 0.25vw, 1.25rem)',
               color: 'var(--muted)',
               maxWidth: '560px',

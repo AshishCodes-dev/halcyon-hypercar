@@ -14,7 +14,7 @@ export default function GoogleButton({ onClick, loading, disabled }) {
       y: shouldReduceMotion ? 0 : -2,
       boxShadow: shouldReduceMotion
         ? '0 2px 10px rgba(0, 0, 0, 0.3)'
-        : '0 8px 28px -4px rgba(43, 255, 136, 0.35), 0 0 12px rgba(43, 255, 136, 0.2)',
+        : '0 8px 28px -4px color-mix(in srgb, var(--accent) 35%, transparent), 0 0 12px color-mix(in srgb, var(--accent) 20%, transparent)',
       transition: {
         duration: 0.22,
         ease: [0.16, 1, 0.3, 1],

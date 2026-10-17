@@ -1,4 +1,5 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
+import { ThemeProvider } from './lib/ThemeContext';
 import { AuthProvider } from './lib/AuthContext';
 import { useAuth } from './hooks/useAuth';
 import SmoothScroll from './components/SmoothScroll';
@@ -35,10 +36,12 @@ function AppContent() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <SmoothScroll>
-        <AppContent />
-      </SmoothScroll>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <SmoothScroll>
+          <AppContent />
+        </SmoothScroll>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }

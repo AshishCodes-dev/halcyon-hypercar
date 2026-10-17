@@ -10,6 +10,7 @@
 }
 
 .login-eyebrow {
+  font-family: var(--font-body);
   font-size: clamp(0.7rem, 0.65rem + 0.15vw, 0.75rem);
   font-weight: 600;
   letter-spacing: 0.28em;
@@ -19,10 +20,11 @@
 }
 
 .login-headline {
+  font-family: var(--font-body);
   font-size: clamp(2.25rem, 1.8rem + 2.5vw, 4.25rem);
-  font-weight: 600;
+  font-weight: 750;
   line-height: 1.08;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.04em;
   color: var(--text);
   margin-bottom: clamp(1.25rem, 1rem + 0.75vw, 1.75rem);
   word-break: normal;
@@ -51,6 +53,7 @@
 }
 
 .login-subtext {
+  font-family: var(--font-body);
   font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1.125rem);
   color: var(--muted);
   line-height: 1.5;

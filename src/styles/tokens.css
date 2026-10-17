@@ -1,3 +1,9 @@
+@property --accent {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #2BFF88;
+}
+
 :root {
   --bg: #000000;
   --surface: #0A0A0A;
@@ -7,12 +13,19 @@
   --accent: #2BFF88;
   --danger: #FF2A3D;
 
-  /* Accent Color Variants (for future theme switching) */
+  /* Defined Accents */
   --accent-green: #2BFF88;
-  --accent-red: #FF3B30;
-  --accent-orange: #FF9500;
-  --accent-electric-blue: #007AFF;
-  --accent-violet: #AF52DE;
+  --accent-red: #FF2A3D;
+  --accent-orange: #FF7A1A;
+  --accent-blue: #2D7BFF;
+  --accent-violet: #9B5CFF;
+
+  /* Typography */
+  --font-display: "Michroma", system-ui, sans-serif;
+  --font-body: "Manrope Variable", system-ui, sans-serif;
+
+  /* Smooth Accent Transition */
+  transition: --accent 0.5s ease;
 
   /* Fluid Typography (Mobile-first scales using clamp) */
   --font-fluid-sm: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
@@ -28,4 +41,10 @@
   --space-fluid-md: clamp(1rem, 0.85rem + 0.75vw, 1.5rem);
   --space-fluid-lg: clamp(1.5rem, 1.25rem + 1.25vw, 2.5rem);
   --space-fluid-xl: clamp(2.5rem, 2rem + 2.5vw, 5rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    transition: none !important;
+  }
 }

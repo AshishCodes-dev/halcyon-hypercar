@@ -10,13 +10,14 @@
   color: var(--bg);
   padding: 0.6rem 1.2rem;
   border-radius: 9999px;
+  font-family: var(--font-body);
   font-size: 0.8125rem;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   z-index: 10000;
   transition: top 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 20px rgba(43, 255, 136, 0.4);
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
 .navbar-skip-link:focus-visible {
@@ -26,7 +27,7 @@
 }
 
 /* ==========================================================================
-   Header Bar
+   Header Bar (Default Full Width at Top)
    ========================================================================== */
 
 .navbar-header {
@@ -34,35 +35,75 @@
   top: 0;
   left: 0;
   right: 0;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
   height: 68px;
   background-color: transparent;
-  border-bottom: 1px solid transparent;
+  border: 1px solid transparent;
   z-index: 1000;
-  transition: height 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-              background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   padding-top: env(safe-area-inset-top, 0);
-  will-change: transform, opacity;
+  transition: max-width 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              margin-top 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              border-radius 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity, max-width;
+  overflow: visible;
 }
 
-/* Scrolled state (> 24px) */
-.navbar-header.navbar-scrolled {
+/* Scrolled state on mobile / default */
+.navbar-header.navbar-capsule {
   height: 58px;
-  background-color: rgba(0, 0, 0, 0.72);
-  backdrop-filter: blur(14px) saturate(160%);
-  -webkit-backdrop-filter: blur(14px) saturate(160%);
-  border-bottom-color: var(--line);
+  background-color: color-mix(in srgb, var(--accent) 5%, rgba(0, 0, 0, 0.55));
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  border-bottom: 1px solid var(--line);
+}
+
+/* Desktop Floating Capsule (scrollY > 24 on >=861px) */
+@media (min-width: 861px) {
+  .navbar-header.navbar-capsule {
+    top: 0;
+    margin-top: 10px;
+    width: calc(100% - 32px);
+    max-width: 1100px;
+    height: 56px;
+    border-radius: 9999px;
+    background-color: color-mix(in srgb, var(--accent) 5%, rgba(0, 0, 0, 0.55));
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+    border: 1px solid color-mix(in srgb, var(--accent) 25%, #1A1A1A);
+    box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.8),
+                0 0 24px -6px color-mix(in srgb, var(--accent) 20%, transparent);
+    overflow: hidden;
+  }
 }
 
 .navbar-container {
-  max-width: 1360px;
+  width: 100%;
   height: 100%;
-  margin: 0 auto;
-  padding: 0 clamp(1rem, 0.8rem + 1vw, 2.5rem);
+  padding: 0 clamp(1rem, 0.8rem + 1vw, 2rem);
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: relative;
+  z-index: 10;
+}
+
+/* Satisfying accent color ripple across navbar */
+.navbar-accent-ripple {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  margin-left: -30px;
+  margin-top: -30px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  filter: blur(8px);
 }
 
 /* ==========================================================================
@@ -102,8 +143,9 @@
 
 .navbar-breadcrumb-item {
   display: inline-block;
+  font-family: var(--font-body);
   font-size: 0.8125rem;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--muted);
@@ -118,9 +160,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
 }
 
 .navbar-links-list {
@@ -144,26 +183,31 @@
   align-items: center;
   justify-content: center;
   padding: 0.45rem 0.95rem;
+  font-family: var(--font-body);
   font-size: 0.8125rem;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--muted);
   letter-spacing: -0.01em;
   text-decoration: none;
   border-radius: 9999px;
-  transition: color 0.2s ease;
+  transition: color 0.25s ease;
   min-height: 36px;
 }
 
-.navbar-link:hover,
-.navbar-link-active {
+.navbar-link:hover {
   color: var(--text);
 }
 
-/* Shared hover pill */
+.navbar-link.navbar-link-active {
+  color: var(--accent);
+}
+
+/* Hover pill with subtle accent border */
 .navbar-hover-pill {
   position: absolute;
   inset: 0;
-  background-color: rgba(255, 255, 255, 0.08);
+  background-color: color-mix(in srgb, var(--accent) 12%, #0A0A0A);
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
   border-radius: 9999px;
   z-index: 0;
   pointer-events: none;
@@ -174,22 +218,22 @@
   z-index: 1;
 }
 
-/* Active glowing dot */
+/* Active glowing accent dot */
 .navbar-active-dot {
   position: absolute;
-  bottom: 2px;
+  bottom: 3px;
   left: 50%;
   transform: translateX(-50%);
-  width: 3.5px;
-  height: 3.5px;
+  width: 4px;
+  height: 4px;
   background-color: var(--accent);
   border-radius: 50%;
-  box-shadow: 0 0 8px var(--accent);
+  box-shadow: 0 0 10px var(--accent);
   z-index: 1;
 }
 
 /* ==========================================================================
-   Zone 3: Right (Reserve Pill + Auth + Hamburger)
+   Zone 3: Right (Color Switcher + Reserve + Auth)
    ========================================================================== */
 
 .navbar-right {
@@ -199,38 +243,11 @@
   flex-shrink: 0;
 }
 
-/* Reserve Pill Button */
-.navbar-reserve-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.45rem 1.15rem;
-  background-color: var(--accent);
-  color: var(--bg);
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  border-radius: 9999px;
-  text-decoration: none;
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  min-height: 36px;
-  user-select: none;
-}
-
-.navbar-reserve-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 0 20px -2px var(--accent), 0 4px 12px rgba(43, 255, 136, 0.3);
-}
-
-.navbar-reserve-btn:active {
-  transform: translateY(0);
-}
-
 /* Sign In link (signed out) */
 .navbar-signin-link {
+  font-family: var(--font-body);
   font-size: 0.8125rem;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--muted);
   text-decoration: none;
   padding: 0.45rem 0.65rem;
@@ -254,8 +271,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   border: 1px solid var(--line);
   background-color: var(--surface);
@@ -267,7 +284,7 @@
 
 .navbar-avatar-btn:hover {
   border-color: var(--accent);
-  box-shadow: 0 0 12px -2px rgba(43, 255, 136, 0.4);
+  box-shadow: 0 0 14px -2px color-mix(in srgb, var(--accent) 45%, transparent);
 }
 
 .navbar-avatar-img {
@@ -277,7 +294,8 @@
 }
 
 .navbar-avatar-initial {
-  font-size: 0.8125rem;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
   font-weight: 700;
   color: var(--accent);
 }
@@ -306,6 +324,7 @@
 }
 
 .navbar-dropdown-name {
+  font-family: var(--font-body);
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--text);
@@ -315,6 +334,7 @@
 }
 
 .navbar-dropdown-email {
+  font-family: var(--font-body);
   font-size: 0.75rem;
   color: var(--muted);
   overflow: hidden;
@@ -333,8 +353,9 @@
   align-items: center;
   width: 100%;
   padding: 0.5rem 0.6rem;
+  font-family: var(--font-body);
   font-size: 0.8125rem;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--muted);
   border-radius: 6px;
   transition: color 0.15s ease, background-color 0.15s ease;
@@ -379,7 +400,6 @@
   transform-origin: center;
 }
 
-/* Active X State for Hamburger */
 .navbar-hamburger-btn.is-active .hamburger-line.top {
   transform: translateY(3.25px) rotate(45deg);
   background-color: var(--accent);
@@ -391,18 +411,74 @@
 }
 
 /* ==========================================================================
-   Scroll Progress Line
+   Bottom Glow Edge & Scroll Progress
    ========================================================================== */
 
-.navbar-scroll-progress {
+.navbar-bottom-glow-edge {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   height: 1px;
-  background-color: var(--accent);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--accent) 70%, transparent) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.navbar-bottom-glow-edge::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 15%;
+  right: 15%;
+  height: 8px;
+  background: radial-gradient(
+    ellipse at center,
+    color-mix(in srgb, var(--accent) 30%, transparent) 0%,
+    transparent 80%
+  );
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+.navbar-progress-track {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  pointer-events: none;
+  z-index: 2;
+  overflow: visible;
+}
+
+.navbar-scroll-progress {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--accent),
+    color-mix(in srgb, var(--accent) 70%, #ffffff)
+  );
   transform-origin: 0% 50%;
-  box-shadow: 0 0 8px var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
+
+.navbar-progress-head {
+  position: absolute;
+  right: -2px;
+  top: -2.5px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  box-shadow: 0 0 8px 1px var(--accent);
 }
 
 /* ==========================================================================
@@ -427,13 +503,13 @@
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
-  gap: 2.5rem;
+  gap: 2rem;
 }
 
 .mobile-links-list {
   display: flex;
   flex-direction: column;
-  gap: clamp(1rem, 0.6rem + 2vw, 2rem);
+  gap: clamp(1rem, 0.6rem + 2vw, 1.75rem);
   list-style: none;
   margin-top: clamp(1rem, 0.8rem + 1.5vw, 2.5rem);
 }
@@ -444,12 +520,13 @@
 
 .mobile-nav-link {
   display: block;
+  font-family: var(--font-body);
   font-size: clamp(2.25rem, 1.8rem + 3.5vw, 4rem);
-  font-weight: 600;
-  letter-spacing: -0.03em;
+  font-weight: 750;
+  letter-spacing: -0.035em;
   color: var(--muted);
   text-decoration: none;
-  transition: color 0.2s ease, transform 0.2s ease;
+  transition: color 0.2s ease;
   line-height: 1.1;
 }
 
@@ -472,20 +549,20 @@
   padding-top: 1.5rem;
 }
 
-.mobile-reserve-btn {
+.mobile-switcher-wrapper {
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 100%;
-  min-height: 52px;
-  background-color: var(--accent);
-  color: var(--bg);
-  font-size: 1rem;
+  justify-content: space-between;
+  padding: 0.25rem 0.5rem;
+}
+
+.mobile-switcher-label {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
   font-weight: 600;
-  letter-spacing: 0.01em;
-  border-radius: 9999px;
-  text-decoration: none;
-  box-shadow: 0 4px 20px rgba(43, 255, 136, 0.35);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 
 .mobile-signin-link {
@@ -497,8 +574,9 @@
   background-color: var(--surface);
   border: 1px solid var(--line);
   color: var(--text);
+  font-family: var(--font-body);
   font-size: 0.9375rem;
-  font-weight: 500;
+  font-weight: 600;
   border-radius: 9999px;
   text-decoration: none;
 }
@@ -517,8 +595,8 @@
 }
 
 .mobile-avatar-img {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   object-fit: cover;
   border: 1px solid var(--line);
@@ -528,25 +606,28 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   background-color: var(--surface);
   border: 1px solid var(--line);
   color: var(--accent);
+  font-family: var(--font-body);
   font-size: 0.875rem;
   font-weight: 700;
 }
 
 .mobile-user-name {
+  font-family: var(--font-body);
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text);
 }
 
 .mobile-signout-btn {
+  font-family: var(--font-body);
   font-size: 0.8125rem;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--danger);
   padding: 0.5rem 0.75rem;
   border-radius: 6px;
@@ -561,7 +642,8 @@
 /* Tablet & Mobile (<=860px) */
 @media (max-width: 860px) {
   .navbar-center,
-  .navbar-reserve-btn,
+  .navbar-right .halcyon-reserve-pill,
+  .navbar-right .accent-switcher-group,
   .navbar-signin-link,
   .navbar-avatar-wrapper {
     display: none;
@@ -589,7 +671,6 @@
     transition: none !important;
   }
 
-  .navbar-reserve-btn,
   .navbar-link,
   .hamburger-line,
   .mobile-nav-link {
@@ -598,5 +679,9 @@
 
   .navbar-scroll-progress {
     transition: none !important;
+  }
+
+  .navbar-accent-ripple {
+    display: none !important;
   }
 }

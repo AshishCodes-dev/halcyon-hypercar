@@ -8,6 +8,12 @@ importers:
 
   .:
     dependencies:
+      '@fontsource-variable/manrope':
+        specifier: ^5.3.0
+        version: 5.3.0
+      '@fontsource/michroma':
+        specifier: ^5.3.0
+        version: 5.3.0
       '@react-three/drei':
         specifier: ^10.7.9
         version: 10.7.9(@react-three/fiber@9.8.2(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(three@0.186.1))(@types/react@19.3.0)(@types/three@0.186.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(three@0.186.1)
@@ -294,6 +300,12 @@ packages:
 
   '@firebase/webchannel-wrapper@1.0.7':
     resolution: {integrity: sha512-phBFwieDLvkZGYN9CE9ZFNEIoBVksprzsnCzQejCmCHtgwCXReeuRpoEGN9C4EbhONztv8NRV1tau6Rb9pONwQ==}
+
+  '@fontsource-variable/manrope@5.3.0':
+    resolution: {integrity: sha512-6D5dgokHsWDDMtmXHznKa0hK229NN+1a4BLPmUCLqcO1Pw5EEhWY5RFt0AcXnVRAljFFPfRtLkJePQj6LSsV6g==}
+
+  '@fontsource/michroma@5.3.0':
+    resolution: {integrity: sha512-9sbGD7ek1hGvq0TmgNPFbuI3k7qwXVdZ+zCDsTHDGRIQqfYrpYWwEYcwH2fzOtvn8uiGqzAoJ72vuFE3v/hDdg==}
 
   '@grpc/grpc-js@1.9.16':
     resolution: {integrity: sha512-wE4Ut/olIzfKqp631XrG+wbF0v1vWFN4YL9FyXC2LJiG33DsV7PLzURjrCvY/6je2ntdRkeLpPDluzSRGaVltQ==}
@@ -1551,6 +1563,10 @@ snapshots:
       tslib: 2.8.1
 
   '@firebase/webchannel-wrapper@1.0.7': {}
+
+  '@fontsource-variable/manrope@5.3.0': {}
+
+  '@fontsource/michroma@5.3.0': {}
 
   '@grpc/grpc-js@1.9.16':
     dependencies:

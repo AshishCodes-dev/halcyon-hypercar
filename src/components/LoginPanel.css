@@ -27,7 +27,7 @@
     from 0deg,
     transparent 0deg,
     transparent 280deg,
-    rgba(43, 255, 136, 0.15) 325deg,
+    color-mix(in srgb, var(--accent) 15%, transparent) 325deg,
     var(--accent) 360deg
   );
   pointer-events: none;

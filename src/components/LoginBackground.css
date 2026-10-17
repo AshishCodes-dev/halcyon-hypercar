@@ -31,8 +31,8 @@
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgba(43, 255, 136, 0.12) 0%,
-    rgba(43, 255, 136, 0.035) 42%,
+    color-mix(in srgb, var(--accent) 12%, transparent) 0%,
+    color-mix(in srgb, var(--accent) 3.5%, transparent) 42%,
     transparent 72%
   );
   filter: blur(40px);
@@ -51,8 +51,8 @@
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgba(43, 255, 136, 0.1) 0%,
-    rgba(43, 255, 136, 0.03) 45%,
+    color-mix(in srgb, var(--accent) 10%, transparent) 0%,
+    color-mix(in srgb, var(--accent) 3%, transparent) 45%,
     transparent 75%
   );
   filter: blur(50px);
@@ -69,7 +69,7 @@
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgba(43, 255, 136, 0.08) 0%,
+    color-mix(in srgb, var(--accent) 8%, transparent) 0%,
     transparent 70%
   );
 }

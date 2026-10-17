@@ -12,14 +12,16 @@
   border-right: 7px solid transparent;
   border-bottom: 13px solid var(--accent);
   display: inline-block;
-  transform: translateY(-1px);
-  filter: drop-shadow(0 0 6px rgba(43, 255, 136, 0.5));
+  transform-origin: 50% 70%;
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--accent) 60%, transparent));
 }
 
 .halcyon-wordmark {
-  font-size: 0.8125rem;
+  font-family: var(--font-display);
+  font-size: 14px;
   font-weight: 700;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.18em;
   color: var(--text);
   text-transform: uppercase;
+  line-height: 1;
 }
