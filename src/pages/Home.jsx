@@ -14,7 +14,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main id="main-content" style={{ width: '100%', backgroundColor: 'var(--bg)' }}>
+    <main id="main-content" style={{ width: '100%', backgroundColor: 'transparent' }}>
       {sections.map((section, index) => (
         <section
           key={section.id}
@@ -26,9 +26,8 @@ export default function Home() {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: 'var(--bg)',
+            backgroundColor: 'transparent',
             color: 'var(--text)',
-            borderBottom: index < sections.length - 1 ? '1px solid var(--line)' : 'none',
             padding: 'clamp(2rem, 1.5rem + 2vw, 4rem) clamp(1rem, 0.8rem + 1.5vw, 2.5rem)',
             textAlign: 'center',
             position: 'relative',

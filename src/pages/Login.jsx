@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import LoginBackground from '../components/LoginBackground';
+import SiteBackground from '../components/SiteBackground';
 import LoginHeadline from '../components/LoginHeadline';
 import LoginPanel from '../components/LoginPanel';
 import './Login.css';
@@ -21,7 +21,7 @@ export default function Login() {
   return (
     <main className="login-page-root">
       {/* Background with reactive glow and subtle grid */}
-      <LoginBackground />
+      <SiteBackground variant="login" />
 
       {/* Main interactive split container */}
       <div className="login-page-container">

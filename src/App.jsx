@@ -4,6 +4,7 @@ import { AuthProvider } from './lib/AuthContext';
 import { useAuth } from './hooks/useAuth';
 import SmoothScroll from './components/SmoothScroll';
 import Navbar from './components/Navbar';
+import SiteBackground from './components/SiteBackground';
 import Home from './pages/Home';
 import Login from './pages/Login';
 
@@ -20,16 +21,19 @@ function AppContent() {
     );
   }
 
-  // The navbar shows on every route EXCEPT /login
-  const showNavbar = location.pathname !== '/login';
+  // The navbar and site background show on every route EXCEPT /login
+  const isLoginPage = location.pathname === '/login';
 
   return (
     <>
-      {showNavbar && <Navbar />}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
+      {!isLoginPage && <SiteBackground variant="site" />}
+      {!isLoginPage && <Navbar />}
+      <div style={{ position: 'relative', zIndex: 1 }}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </div>
     </>
   );
 }
