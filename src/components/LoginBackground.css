@@ -1,0 +1,75 @@
+.login-bg-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Faint 1px grid lines with smooth radial fade */
+.login-bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, var(--line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+  background-size: clamp(48px, 4vw, 64px) clamp(48px, 4vw, 64px);
+  mask-image: radial-gradient(ellipse 65% 65% at 50% 50%, #000 20%, transparent 85%);
+  -webkit-mask-image: radial-gradient(ellipse 65% 65% at 50% 50%, #000 20%, transparent 85%);
+  opacity: 0.75;
+}
+
+/* Mouse-follow glow */
+.login-bg-glow-mouse {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: clamp(420px, 45vw, 680px);
+  height: clamp(420px, 45vw, 680px);
+  margin-left: calc(-0.5 * clamp(420px, 45vw, 680px));
+  margin-top: calc(-0.5 * clamp(420px, 45vw, 680px));
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(43, 255, 136, 0.12) 0%,
+    rgba(43, 255, 136, 0.035) 42%,
+    transparent 72%
+  );
+  filter: blur(40px);
+  will-change: transform;
+}
+
+/* Touch auto-drifting glow */
+.login-bg-glow-touch {
+  position: absolute;
+  top: 30%;
+  left: 40%;
+  width: clamp(340px, 70vw, 520px);
+  height: clamp(340px, 70vw, 520px);
+  margin-left: calc(-0.5 * clamp(340px, 70vw, 520px));
+  margin-top: calc(-0.5 * clamp(340px, 70vw, 520px));
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(43, 255, 136, 0.1) 0%,
+    rgba(43, 255, 136, 0.03) 45%,
+    transparent 75%
+  );
+  filter: blur(50px);
+}
+
+/* Static glow for reduced motion */
+.login-bg-glow-static {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(43, 255, 136, 0.08) 0%,
+    transparent 70%
+  );
+}

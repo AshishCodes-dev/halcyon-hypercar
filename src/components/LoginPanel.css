@@ -1,0 +1,122 @@
+.login-panel-container {
+  width: 100%;
+  max-width: 440px;
+  position: relative;
+  z-index: 10;
+}
+
+/* 1px border host with rotating conic gradient */
+.login-panel-card-border {
+  position: relative;
+  border-radius: 20px;
+  padding: 1px;
+  background-color: var(--line);
+  overflow: hidden;
+  box-shadow: 
+    0 24px 64px -16px rgba(0, 0, 0, 0.9),
+    0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.login-panel-conic-glow {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 280deg,
+    rgba(43, 255, 136, 0.15) 325deg,
+    var(--accent) 360deg
+  );
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform;
+}
+
+/* Inner dark surface card */
+.login-panel-card-inner {
+  position: relative;
+  z-index: 1;
+  background-color: var(--surface);
+  border-radius: 19px;
+  padding: clamp(1.75rem, 1.4rem + 1vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.25rem, 1rem + 0.5vw, 1.75rem);
+}
+
+.login-panel-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.login-panel-title {
+  font-size: clamp(1.35rem, 1.25rem + 0.35vw, 1.65rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.login-panel-subtext {
+  font-size: clamp(0.85rem, 0.8rem + 0.15vw, 0.925rem);
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.login-panel-actions {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Error message area */
+.login-panel-error {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--danger);
+  font-size: 0.8125rem;
+  margin-top: 0.85rem;
+  line-height: 1.4;
+  overflow: hidden;
+}
+
+.login-panel-error-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: var(--danger);
+  flex-shrink: 0;
+}
+
+.login-panel-error-text {
+  word-break: break-word;
+}
+
+.login-panel-footer {
+  margin-top: 0.25rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.login-panel-legal {
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+}
+
+@media (max-width: 899px) {
+  .login-panel-container {
+    max-width: 100%;
+  }
+
+  .login-panel-card-inner {
+    padding: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);
+  }
+}

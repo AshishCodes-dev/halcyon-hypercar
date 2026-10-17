@@ -1,0 +1,110 @@
+.google-auth-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 52px;
+  padding: 0.75rem 1.5rem;
+  background-color: #FFFFFF;
+  color: #000000;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  overflow: hidden;
+  user-select: none;
+  touch-action: manipulation;
+  will-change: transform, box-shadow;
+}
+
+.google-auth-button:disabled {
+  opacity: 0.85;
+  cursor: not-allowed;
+}
+
+/* Light sweep sheen */
+.google-button-sweep-track {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 9999px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.google-button-sweep-beam {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.85) 50%,
+    transparent 100%
+  );
+  transform: skewX(-25deg);
+  will-change: transform, opacity;
+}
+
+/* Content */
+.google-button-content {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  width: 100%;
+}
+
+.google-icon-svg {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+
+.google-button-label {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #0A0A0A;
+  letter-spacing: -0.01em;
+}
+
+/* Loading state */
+.google-button-loading {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.google-button-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(0, 0, 0, 0.15);
+  border-top-color: #000000;
+  border-radius: 50%;
+  animation: googleSpin 0.7s linear infinite;
+}
+
+.google-button-loading-text {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #0A0A0A;
+}
+
+@keyframes googleSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .google-button-spinner {
+    animation: none;
+    border-top-color: #000000;
+  }
+}

@@ -1,0 +1,25 @@
+.halcyon-brand-lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  user-select: none;
+}
+
+.halcyon-triangle-mark {
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 13px solid var(--accent);
+  display: inline-block;
+  transform: translateY(-1px);
+  filter: drop-shadow(0 0 6px rgba(43, 255, 136, 0.5));
+}
+
+.halcyon-wordmark {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  color: var(--text);
+  text-transform: uppercase;
+}

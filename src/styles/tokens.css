@@ -1,9 +1,11 @@
 :root {
   --bg: #000000;
+  --surface: #0A0A0A;
   --text: #F5F5F5;
   --muted: #8A8A8A;
   --line: #1A1A1A;
   --accent: #2BFF88;
+  --danger: #FF2A3D;
 
   /* Accent Color Variants (for future theme switching) */
   --accent-green: #2BFF88;
