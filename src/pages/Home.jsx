@@ -3,10 +3,7 @@ import Hero from '../components/hero/Hero';
 import Models from '../components/models/Models';
 import Design from '../components/design/Design';
 import Performance from '../components/performance/Performance';
-
-const placeholderSections = [
-  { id: 'colors', title: 'Colors', subtitle: 'Five Bespoke Signature Finishes' },
-];
+import Colors from '../components/colors/Colors';
 
 export default function Home() {
   useEffect(() => {
@@ -27,67 +24,8 @@ export default function Home() {
       {/* Performance Launch Run Section with GSAP pinned scrub */}
       <Performance />
 
-      {/* Remaining 1 Placeholder Section */}
-      {placeholderSections.map((section, index) => (
-        <section
-          key={section.id}
-          id={section.id}
-          style={{
-            minHeight: '100svh',
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: 'transparent',
-            color: 'var(--text)',
-            padding: 'clamp(2rem, 1.5rem + 2vw, 4rem) clamp(1rem, 0.8rem + 1.5vw, 2.5rem)',
-            textAlign: 'center',
-            position: 'relative',
-          }}
-        >
-          <span
-            style={{
-              fontFamily: 'var(--font-body)',
-              fontSize: 'clamp(0.75rem, 0.7rem + 0.2vw, 0.875rem)',
-              letterSpacing: '0.28em',
-              textTransform: 'uppercase',
-              color: 'var(--muted)',
-              marginBottom: '1rem',
-              fontWeight: 600,
-            }}
-          >
-            0{index + 5} / {section.id.toUpperCase()}
-          </span>
-
-          <h2
-            style={{
-              fontFamily: 'var(--font-body)',
-              fontSize: 'clamp(2.75rem, 2rem + 4vw, 6.5rem)',
-              fontWeight: 750,
-              letterSpacing: '-0.04em',
-              color: 'var(--text)',
-              lineHeight: 1.06,
-              marginBottom: '1.25rem',
-            }}
-          >
-            {section.title}
-          </h2>
-
-          <p
-            style={{
-              fontFamily: 'var(--font-body)',
-              fontSize: 'clamp(0.95rem, 0.9rem + 0.25vw, 1.25rem)',
-              color: 'var(--muted)',
-              maxWidth: '560px',
-              lineHeight: 1.5,
-              fontWeight: 400,
-            }}
-          >
-            {section.subtitle}
-          </p>
-        </section>
-      ))}
+      {/* Colors Finish Selector Section */}
+      <Colors />
     </main>
   );
 }

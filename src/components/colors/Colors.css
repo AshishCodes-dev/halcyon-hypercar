@@ -1,0 +1,474 @@
+/* ==========================================================================
+   HALCYON COLORS SECTION STYLES
+   Bespoke finish selector with 5 expanding panels.
+   Desktop: Flex-grow horizontal accordion with cursor-reactive spotlights.
+   Mobile: Vertical accordion stack with tap targets >= 48px.
+   Zero hardcoded colors: all accents derive from themeConstants.
+   ========================================================================== */
+
+.colors-section {
+  position: relative;
+  width: 100%;
+  min-height: 100svh;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(5.5rem, 4.5rem + 2vw, 7rem) clamp(1.5rem, 3.5vw, 4.5rem) clamp(6.5rem, 9vw, 12rem) clamp(1.5rem, 3.5vw, 4.5rem);
+  box-sizing: border-box;
+  z-index: 2;
+}
+
+/* --------------------------------------------------------------------------
+   HEADER BLOCK
+   -------------------------------------------------------------------------- */
+.colors-header-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 680px;
+  margin-bottom: clamp(2rem, 3vw, 3rem);
+}
+
+.colors-eyebrow {
+  font-family: var(--font-body);
+  font-size: clamp(0.7rem, 0.65rem + 0.2vw, 0.8rem);
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.colors-eyebrow-accent {
+  width: 5px;
+  height: 5px;
+  background-color: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--accent);
+}
+
+.colors-heading {
+  font-family: var(--font-body);
+  font-size: clamp(1.8rem, 1.4rem + 1.4vw, 2.75rem);
+  font-weight: 750;
+  letter-spacing: -0.035em;
+  color: var(--text);
+  line-height: 1.15;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35em;
+}
+
+/* Masked word reveal */
+.colors-heading-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.colors-heading-inner {
+  display: inline-block;
+  transform: translate3d(0, 115%, 0);
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.colors-section.is-entered .colors-heading-inner {
+  transform: translate3d(0, 0, 0);
+}
+
+.colors-heading-inner.word-delay-0 { transition-delay: 0.05s; }
+.colors-heading-inner.word-delay-1 { transition-delay: 0.12s; }
+.colors-heading-inner.word-delay-2 { transition-delay: 0.19s; }
+
+.colors-subtitles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.2rem;
+}
+
+.colors-disclaimer {
+  font-family: var(--font-body);
+  font-size: clamp(0.74rem, 0.7rem + 0.15vw, 0.84rem);
+  color: var(--muted);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.colors-hint {
+  font-family: var(--font-body);
+  font-size: clamp(0.74rem, 0.7rem + 0.15vw, 0.84rem);
+  color: color-mix(in srgb, var(--accent) 75%, var(--text));
+  margin: 0;
+  letter-spacing: 0.02em;
+  font-weight: 500;
+  transition: color 0.4s ease;
+}
+
+/* --------------------------------------------------------------------------
+   PANELS CONTAINER (Desktop: 5 expanding columns)
+   -------------------------------------------------------------------------- */
+.colors-panels-group {
+  display: flex;
+  gap: clamp(0.75rem, 1.2vw, 1.35rem);
+  width: 100%;
+  height: min(68svh, 620px);
+  min-height: 440px;
+  box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------------------
+   INDIVIDUAL FINISH PANEL
+   -------------------------------------------------------------------------- */
+.finish-panel {
+  position: relative;
+  border-radius: clamp(16px, 2vw, 24px);
+  border: 1px solid color-mix(in srgb, var(--finish) 25%, var(--line));
+  background: linear-gradient(
+    180deg,
+    var(--bg) 0%,
+    color-mix(in srgb, var(--finish) 30%, var(--bg)) 100%
+  );
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(1.2rem, 1.6vw, 1.8rem);
+  cursor: pointer;
+  user-select: none;
+  box-sizing: border-box;
+  outline: none;
+
+  /* Stagger entrance */
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+  transition:
+    opacity 0.7s var(--stagger-delay, 0s) cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s var(--stagger-delay, 0s) cubic-bezier(0.16, 1, 0.3, 1),
+    flex-grow 0.7s cubic-bezier(0.76, 0, 0.24, 1),
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+.colors-section.is-entered .finish-panel {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Desktop flex expansion */
+.finish-panel.is-collapsed {
+  flex: 1 1 0;
+}
+
+.finish-panel.is-active {
+  flex: 4.5 1 0;
+  border-color: var(--finish);
+  box-shadow:
+    0 0 28px color-mix(in srgb, var(--finish) 28%, transparent),
+    inset 0 0 16px color-mix(in srgb, var(--finish) 10%, transparent);
+}
+
+/* Hover lift on collapsed panels (desktop fine pointers) */
+@media (hover: hover) and (pointer: fine) {
+  .colors-section.is-entered .finish-panel.is-collapsed:hover {
+    transform: translate3d(0, -6px, 0);
+    border-color: color-mix(in srgb, var(--finish) 55%, var(--line));
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--finish) 14%, transparent);
+  }
+}
+
+.finish-panel:focus-visible {
+  outline: 2px solid var(--finish);
+  outline-offset: 4px;
+}
+
+/* 1. Subtle 1px Technical Grid Overlay */
+.finish-panel-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--text) 3.5%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--text) 3.5%, transparent) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 2. Soft Bottom Radial Glow */
+.finish-panel-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 50% 90%,
+    color-mix(in srgb, var(--finish) 24%, transparent) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 3. Interactive Cursor Spotlight */
+.finish-panel-spotlight {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle 220px at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--finish) 22%, transparent) 0%,
+    transparent 100%
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .finish-panel:hover .finish-panel-spotlight {
+    opacity: 1;
+  }
+}
+
+/* 4. Top Header */
+.finish-panel-top {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.finish-number {
+  font-family: var(--font-display);
+  font-size: clamp(0.72rem, 0.68rem + 0.15vw, 0.82rem);
+  letter-spacing: 0.18em;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.finish-active-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--finish);
+  box-shadow: 0 0 8px var(--finish);
+}
+
+/* 5. Center Graphic: Side-Profile Hypercar Outline */
+.finish-car-container {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: 520px;
+  aspect-ratio: 1000 / 340;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.finish-panel.is-collapsed .finish-car-container {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.finish-panel.is-active .finish-car-container {
+  opacity: 1;
+  transform: scale(1);
+  transition:
+    opacity 0.6s 0.18s ease,
+    transform 0.6s 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.finish-car-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Entrance draw-on for the active panel car outline */
+.colors-section.is-entered .finish-panel.is-active .finish-car-body {
+  stroke-dasharray: 2600;
+  stroke-dashoffset: 0;
+  animation: finishCarDraw 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes finishCarDraw {
+  0% { stroke-dashoffset: 2600; }
+  100% { stroke-dashoffset: 0; }
+}
+
+.finish-light-blade {
+  filter: drop-shadow(0 0 6px var(--finish));
+}
+
+/* 6. Bottom Typography: Finish Name */
+.finish-panel-bottom {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+
+.finish-name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  transition: color 0.4s ease, font-size 0.5s ease;
+}
+
+/* Collapsed on desktop: vertical rotated writing mode */
+.finish-panel.is-collapsed .finish-name {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: clamp(0.72rem, 0.68rem + 0.15vw, 0.85rem);
+  letter-spacing: 0.22em;
+  color: color-mix(in srgb, var(--text) 65%, transparent);
+  white-space: nowrap;
+}
+
+/* Expanded on desktop: large horizontal clamped title */
+.finish-panel.is-active .finish-name {
+  writing-mode: horizontal-tb;
+  transform: none;
+  font-size: clamp(1.15rem, 0.95rem + 1vw, 2.1rem);
+  letter-spacing: -0.015em;
+  color: var(--text);
+  white-space: nowrap;
+  line-height: 1.05;
+}
+
+/* --------------------------------------------------------------------------
+   RESERVE BUTTON CTA (Below the panels)
+   -------------------------------------------------------------------------- */
+.colors-reserve-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: clamp(2.5rem, 4vw, 3.8rem);
+  width: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   MOBILE / TABLET RESPONSIVE (<= 860px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 860px) {
+  .colors-section {
+    padding: 2rem 1.25rem clamp(5rem, 8vw, 8rem) 1.25rem;
+    min-height: auto;
+  }
+
+  .colors-panels-group {
+    flex-direction: column;
+    height: auto;
+    min-height: auto;
+    gap: 0.75rem;
+  }
+
+  /* Mobile accordion heights */
+  .finish-panel {
+    flex: none !important;
+    padding: 1rem 1.25rem;
+    border-radius: 16px;
+    transition: height 0.55s cubic-bezier(0.76, 0, 0.24, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+  }
+
+  .finish-panel.is-collapsed {
+    height: 72px;
+    min-height: 72px;
+    justify-content: center;
+  }
+
+  .finish-panel.is-active {
+    height: 290px;
+    min-height: 290px;
+    justify-content: space-between;
+  }
+
+  /* On collapsed mobile panel, arrange top & bottom side by side */
+  .finish-panel.is-collapsed .finish-panel-top {
+    width: auto;
+  }
+
+  .finish-panel.is-collapsed .finish-car-container {
+    display: none;
+  }
+
+  .finish-panel.is-collapsed .finish-panel-bottom {
+    width: auto;
+    align-items: center;
+  }
+
+  .finish-panel.is-collapsed {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* Finish name is ALWAYS horizontal on mobile */
+  .finish-panel .finish-name {
+    writing-mode: horizontal-tb !important;
+    transform: none !important;
+    font-size: clamp(0.85rem, 0.78rem + 0.3vw, 1.15rem) !important;
+    letter-spacing: 0.08em !important;
+    color: var(--text) !important;
+  }
+
+  .finish-panel.is-collapsed .finish-name {
+    color: color-mix(in srgb, var(--text) 75%, transparent) !important;
+  }
+
+  .finish-car-container {
+    max-width: 280px;
+  }
+}
+
+@media (max-width: 480px) {
+  .colors-heading {
+    font-size: 1.55rem;
+  }
+
+  .finish-panel.is-active {
+    height: 260px;
+    min-height: 260px;
+  }
+
+  .finish-car-container {
+    max-width: 220px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   PREFERS-REDUCED-MOTION
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .colors-heading-inner {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .finish-panel {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .finish-panel-spotlight {
+    display: none !important;
+  }
+
+  .finish-car-body {
+    animation: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+}
