@@ -1,0 +1,379 @@
+/* ==========================================================================
+   HALCYON HERO SECTION
+   Award-level cinematic 3D stage with GSAP ScrollTrigger pinning
+   ========================================================================== */
+
+/* Outer scroll wrapper for GSAP pinning (250svh for smooth scrub distance) */
+.hero-scroll-container {
+  position: relative;
+  width: 100%;
+  height: 250svh;
+  background-color: transparent;
+}
+
+/* Reduced motion single-screen height */
+.hero-scroll-container.reduced-motion {
+  height: 100svh;
+}
+
+/* Sticky stage locked at the top of viewport during scrub */
+.hero-stage {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100svh;
+  min-height: 100svh;
+  overflow: hidden;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+/* Visually hidden screen reader element */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* --------------------------------------------------------------------------
+   MINIMAL PROGRESS LOADER
+   -------------------------------------------------------------------------- */
+.hero-loader-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  background-color: #000000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s ease;
+  pointer-events: none;
+}
+
+.hero-loader-overlay.loaded {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.hero-loader-track {
+  width: clamp(160px, 25vw, 280px);
+  height: 1.5px;
+  background-color: var(--line);
+  position: relative;
+  overflow: hidden;
+  border-radius: 1px;
+}
+
+.hero-loader-bar {
+  height: 100%;
+  background-color: var(--accent);
+  transition: width 0.25s ease-out;
+  box-shadow: 0 0 12px var(--accent);
+}
+
+.hero-loader-meta {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hero-loader-percent {
+  color: var(--text);
+  font-weight: 600;
+  min-width: 3ch;
+}
+
+/* --------------------------------------------------------------------------
+   GIANT OUTLINE WORDMARK BEHIND CAR
+   -------------------------------------------------------------------------- */
+.hero-bg-wordmark {
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 13vw, 15rem);
+  letter-spacing: clamp(0.08em, 1.8vw, 0.2em);
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--accent) 45%, transparent);
+  pointer-events: none;
+  user-select: none;
+  z-index: 1;
+  white-space: nowrap;
+  opacity: 0.85;
+  transition: opacity 0.4s ease, -webkit-text-stroke 0.4s ease;
+  will-change: transform, opacity;
+}
+
+/* --------------------------------------------------------------------------
+   TYPOGRAPHIC HUD ELEMENTS (Overlaid on the Stage)
+   -------------------------------------------------------------------------- */
+.hero-hud-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Eyebrow Label (Top-Left) */
+.hero-eyebrow {
+  position: absolute;
+  top: clamp(5.2rem, 4.5rem + 2vw, 6.8rem);
+  left: clamp(1.5rem, 3.5vw, 4.5rem);
+  font-family: var(--font-body);
+  font-size: clamp(0.7rem, 0.65rem + 0.2vw, 0.8rem);
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.hero-eyebrow-accent {
+  width: 5px;
+  height: 5px;
+  background-color: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--accent);
+}
+
+/* Main Headline (Bottom-Left) */
+.hero-headline-group {
+  position: absolute;
+  bottom: clamp(2.5rem, 2rem + 2vw, 4.5rem);
+  left: clamp(1.5rem, 3.5vw, 4.5rem);
+  max-width: clamp(280px, 48vw, 640px);
+  will-change: transform, opacity;
+}
+
+.hero-headline {
+  font-family: var(--font-body);
+  font-weight: 750;
+  letter-spacing: -0.04em;
+  font-size: clamp(2.2rem, 1.7rem + 3.2vw, 5.2rem);
+  line-height: 1.05;
+  color: var(--text);
+  margin: 0;
+}
+
+.hero-subtitle {
+  font-family: var(--font-body);
+  font-size: clamp(0.75rem, 0.7rem + 0.18vw, 0.875rem);
+  color: var(--muted);
+  margin-top: 0.85rem;
+  line-height: 1.5;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* Spec Row (Bottom-Right) */
+.hero-specs-row {
+  position: absolute;
+  bottom: clamp(2.5rem, 2rem + 2vw, 4.5rem);
+  right: clamp(1.5rem, 3.5vw, 4.5rem);
+  display: flex;
+  gap: clamp(1.5rem, 2.5vw, 3rem);
+  will-change: transform, opacity;
+}
+
+.hero-spec-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  text-align: right;
+}
+
+.hero-spec-label {
+  font-family: var(--font-body);
+  font-size: clamp(0.68rem, 0.64rem + 0.15vw, 0.78rem);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.hero-spec-value {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 1rem + 0.9vw, 2.1rem);
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+/* Scroll Indicator (Bottom-Center) */
+.hero-scroll-indicator {
+  position: absolute;
+  bottom: clamp(1rem, 0.8rem + 1vw, 2.2rem);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--muted);
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.hero-scroll-line {
+  width: 1px;
+  height: 28px;
+  background-color: var(--line);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-scroll-pulse {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 12px;
+  background: linear-gradient(to bottom, transparent, var(--accent), transparent);
+  animation: heroPulseDown 2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@keyframes heroPulseDown {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(250%);
+    opacity: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   FALLBACK GRAPHICS & ACCENT GLOW
+   -------------------------------------------------------------------------- */
+.hero-fallback-root {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.hero-fallback-glow {
+  position: absolute;
+  width: clamp(400px, 50vw, 750px);
+  height: clamp(260px, 32vw, 480px);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    ellipse at center,
+    color-mix(in srgb, var(--accent) 15%, transparent) 0%,
+    color-mix(in srgb, var(--accent) 4%, transparent) 50%,
+    transparent 72%
+  );
+  filter: blur(55px);
+  border-radius: 50%;
+}
+
+.hero-fallback-silhouette {
+  position: absolute;
+  width: clamp(320px, 60vw, 840px);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -44%);
+}
+
+.hero-fallback-svg {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 0 24px color-mix(in srgb, var(--accent) 35%, transparent));
+}
+
+/* --------------------------------------------------------------------------
+   RESPONSIVE LAYOUT BREAKPOINTS
+   -------------------------------------------------------------------------- */
+@media (max-width: 860px) {
+  .hero-hud-layer {
+    padding: 1.2rem;
+  }
+
+  .hero-eyebrow {
+    top: 5rem;
+    left: 1.25rem;
+  }
+
+  .hero-headline-group {
+    bottom: 5.5rem;
+    left: 1.25rem;
+    max-width: 90%;
+  }
+
+  .hero-specs-row {
+    bottom: 1.5rem;
+    left: 1.25rem;
+    right: auto;
+    gap: 1.4rem;
+  }
+
+  .hero-spec-item {
+    text-align: left;
+  }
+
+  .hero-spec-value {
+    font-size: 1.25rem;
+  }
+
+  .hero-scroll-indicator {
+    display: none;
+  }
+
+  .hero-bg-wordmark {
+    top: 32%;
+    font-size: clamp(3rem, 15vw, 6.5rem);
+    -webkit-text-stroke: 1px color-mix(in srgb, var(--accent) 35%, transparent);
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-headline-group {
+    bottom: 6.8rem;
+  }
+
+  .hero-specs-row {
+    bottom: 1.6rem;
+    gap: 1.1rem;
+  }
+
+  .hero-spec-label {
+    font-size: 0.62rem;
+  }
+
+  .hero-spec-value {
+    font-size: 1.1rem;
+  }
+}

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
+import Hero from '../components/hero/Hero';
 
-const sections = [
-  { id: 'top', title: 'Halcyon', subtitle: 'The Apex of Electric Hypercar Engineering' },
+const placeholderSections = [
   { id: 'models', title: 'Models', subtitle: 'Bespoke Aerodynamic Monocoques' },
   { id: 'design', title: 'Design', subtitle: 'Form Perfected Through Fluid Dynamics' },
   { id: 'performance', title: 'Performance', subtitle: 'Sub-Two Second Acceleration & Active Vectoring' },
@@ -15,7 +15,11 @@ export default function Home() {
 
   return (
     <main id="main-content" style={{ width: '100%', backgroundColor: 'transparent' }}>
-      {sections.map((section, index) => (
+      {/* 3D Cinematic Hero Section with ScrollTrigger scrub */}
+      <Hero />
+
+      {/* Remaining 4 Placeholder Sections */}
+      {placeholderSections.map((section, index) => (
         <section
           key={section.id}
           id={section.id}
@@ -44,7 +48,7 @@ export default function Home() {
               fontWeight: 600,
             }}
           >
-            0{index + 1} / {section.id.toUpperCase()}
+            0{index + 2} / {section.id.toUpperCase()}
           </span>
 
           <h2
