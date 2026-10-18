@@ -1,0 +1,656 @@
+/* ==========================================================================
+   HALCYON MODELS LINEUP SECTION
+   Bespoke luxury hypercar presentation with desktop ScrollTrigger pinning,
+   interactive tab selection, precision SVG silhouette, and telemetry specs.
+   ========================================================================== */
+
+/* Outer scroll container providing 300svh scroll distance for pinned desktop stage */
+.models-scroll-container {
+  position: relative;
+  width: 100%;
+  height: 300svh;
+  background-color: transparent;
+}
+
+/* Reduced motion or mobile normal flow container */
+.models-scroll-container.is-unpinned {
+  height: auto;
+  min-height: 100svh;
+  padding: clamp(4rem, 3rem + 4vw, 7rem) 0;
+}
+
+/* Pinned stage locked at top of viewport during scrub */
+.models-stage {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100svh;
+  min-height: 100svh;
+  overflow: hidden;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(5.5rem, 4.5rem + 2vw, 6.8rem) clamp(1.5rem, 3.5vw, 4.5rem) clamp(1.5rem, 2vw, 2.5rem);
+  box-sizing: border-box;
+  z-index: 2;
+}
+
+/* --------------------------------------------------------------------------
+   DESKTOP TWO-COLUMN HERO GRID
+   -------------------------------------------------------------------------- */
+.models-grid {
+  display: grid;
+  grid-template-columns: 44% 56%;
+  gap: clamp(2rem, 3vw, 4.5rem);
+  width: 100%;
+  height: 100%;
+  align-items: center;
+}
+
+/* Left Column: Eyebrow, Heading, Stacked Model Tabs */
+.models-col-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(1.5rem, 2vw, 2.5rem);
+  max-width: 580px;
+}
+
+.models-header-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.models-eyebrow {
+  font-family: var(--font-body);
+  font-size: clamp(0.7rem, 0.65rem + 0.2vw, 0.8rem);
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.models-eyebrow-accent {
+  width: 5px;
+  height: 5px;
+  background-color: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--accent);
+}
+
+.models-heading {
+  font-family: var(--font-body);
+  font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.4rem);
+  font-weight: 750;
+  letter-spacing: -0.035em;
+  color: var(--text);
+  line-height: 1.15;
+  margin: 0;
+}
+
+/* Stacked Model Tab Names */
+.models-tab-list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.35rem, 0.8vw, 0.85rem);
+}
+
+.models-tab-button {
+  background: transparent;
+  border: none;
+  padding: 0.25rem 0;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  user-select: none;
+}
+
+.models-tab-button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 6px;
+  border-radius: 4px;
+}
+
+/* Inactive names: outline only; Active name: solid fill */
+.models-tab-name {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 2.1rem + 3.2vw, 5.2rem);
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  line-height: 0.95;
+  color: transparent;
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--text) 35%, transparent);
+  transition: color 0.4s ease, -webkit-text-stroke 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, color;
+}
+
+.models-tab-button:hover .models-tab-name {
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--text) 70%, transparent);
+}
+
+.models-tab-button.is-active .models-tab-name {
+  color: var(--text);
+  -webkit-text-stroke: 0;
+  transform: translateX(4px);
+}
+
+/* Active Accent Marker next to name */
+.models-tab-marker {
+  width: 24px;
+  height: 2px;
+  background-color: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+  border-radius: 1px;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.models-tab-button.is-active .models-tab-marker {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+/* Right Column: Silhouette Stage + Spec Readout */
+.models-col-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(1.2rem, 1.8vw, 2.2rem);
+  width: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   SILHOUETTE GRAPHIC & TRANSITIONS
+   -------------------------------------------------------------------------- */
+.silhouette-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1000 / 340;
+  max-height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  touch-action: pan-y;
+}
+
+.silhouette-floor-glow {
+  position: absolute;
+  width: 82%;
+  height: 48%;
+  bottom: 8%;
+  left: 9%;
+  background: radial-gradient(
+    ellipse 65% 40% at 50% 50%,
+    color-mix(in srgb, var(--accent) 22%, transparent) 0%,
+    color-mix(in srgb, var(--accent) 5%, transparent) 55%,
+    transparent 80%
+  );
+  filter: blur(28px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.silhouette-graphic-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  will-change: transform, clip-path;
+}
+
+/* Clip-path wipe across on model change */
+.silhouette-graphic-wrapper.wipe-active {
+  animation: silhouetteWipeIn 0.6s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+}
+
+@keyframes silhouetteWipeIn {
+  0% {
+    clip-path: inset(0 100% 0 0);
+  }
+  100% {
+    clip-path: inset(0 0% 0 0);
+  }
+}
+
+/* Wheel spin animations */
+.silhouette-graphic-wrapper.wipe-active .silhouette-wheel.wheel-front {
+  transform-origin: 270px 248px;
+  animation: wheelSpinFront 0.6s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+}
+
+.silhouette-graphic-wrapper.wipe-active .silhouette-wheel.wheel-rear {
+  transform-origin: 770px 248px;
+  animation: wheelSpinRear 0.6s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+}
+
+@keyframes wheelSpinFront {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes wheelSpinRear {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.silhouette-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Entrance draw-on line animation */
+.silhouette-graphic-wrapper.is-entered .silhouette-outline-primary {
+  stroke-dasharray: 2600;
+  stroke-dashoffset: 0;
+  animation: silhouetteDrawOn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes silhouetteDrawOn {
+  0% {
+    stroke-dashoffset: 2600;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Flipped ground reflection */
+.silhouette-reflection-wrapper {
+  position: absolute;
+  top: 96%;
+  left: 0;
+  width: 100%;
+  height: 60%;
+  opacity: 0.14;
+  transform: scaleY(-1);
+  filter: blur(1.5px);
+  mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, transparent 65%);
+  -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.silhouette-reflection-svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Reduced motion disables animations */
+.silhouette-graphic-wrapper.no-motion {
+  animation: none !important;
+}
+
+.silhouette-graphic-wrapper.no-motion .silhouette-wheel {
+  animation: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   SPEC READOUT & TELEMETRY STYLING
+   -------------------------------------------------------------------------- */
+.spec-readout-container {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 1.4vw, 1.8rem);
+  width: 100%;
+  background: color-mix(in srgb, var(--surface) 65%, transparent);
+  border: 1px solid var(--line);
+  padding: clamp(1.2rem, 1.5vw, 1.8rem);
+  border-radius: 4px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.spec-tagline-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.spec-tagline {
+  font-family: var(--font-body);
+  font-size: clamp(1.05rem, 0.95rem + 0.35vw, 1.35rem);
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.spec-description {
+  font-family: var(--font-body);
+  font-size: clamp(0.78rem, 0.74rem + 0.15vw, 0.88rem);
+  color: var(--muted);
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* Metrics Grid: Power, 0-100, Range */
+.spec-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1rem, 1.5vw, 2rem);
+  padding: 0.75rem 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.spec-metric-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.spec-metric-label {
+  font-family: var(--font-body);
+  font-size: clamp(0.68rem, 0.64rem + 0.15vw, 0.78rem);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.spec-metric-value-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+
+.spec-metric-number {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 1.2rem + 1vw, 2.3rem);
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.spec-metric-unit {
+  font-family: var(--font-body);
+  font-size: clamp(0.75rem, 0.7rem + 0.15vw, 0.9rem);
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* Power Output Progress Bar */
+.spec-power-bar-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.spec-power-bar-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.spec-power-bar-track {
+  width: 100%;
+  height: 3px;
+  background-color: var(--line);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.spec-power-bar-fill {
+  width: 100%;
+  height: 100%;
+  background-color: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  transform-origin: left;
+  border-radius: 2px;
+}
+
+/* Actions Row: Reserve CTA Button & Disclaimer */
+.spec-actions-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  margin-top: 0.25rem;
+}
+
+.spec-disclaimer {
+  font-family: var(--font-body);
+  font-size: clamp(0.68rem, 0.65rem + 0.1vw, 0.76rem);
+  color: var(--muted);
+  letter-spacing: -0.01em;
+}
+
+/* --------------------------------------------------------------------------
+   BOTTOM PROGRESS RAIL
+   -------------------------------------------------------------------------- */
+.models-rail-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  width: 100%;
+  padding-top: 0.8rem;
+}
+
+.models-rail-track {
+  width: 100%;
+  height: 2px;
+  background-color: var(--line);
+  position: relative;
+  overflow: hidden;
+  border-radius: 1px;
+}
+
+.models-rail-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  will-change: transform;
+}
+
+.models-rail-steps {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.models-rail-step-btn {
+  background: transparent;
+  border: none;
+  padding: 0.2rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+  outline: none;
+}
+
+.models-rail-step-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.models-rail-step-btn.is-active {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.models-rail-step-accent {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: var(--accent);
+  box-shadow: 0 0 6px var(--accent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.models-rail-step-btn.is-active .models-rail-step-accent {
+  opacity: 1;
+}
+
+/* --------------------------------------------------------------------------
+   MOBILE / TABLET RESPONSIVE STYLING (<= 860px)
+   -------------------------------------------------------------------------- */
+.models-mobile-nav {
+  display: none;
+}
+
+@media (max-width: 860px) {
+  .models-stage {
+    position: relative;
+    top: auto;
+    height: auto;
+    min-height: auto;
+    padding: 1.5rem 1.25rem;
+    overflow: visible;
+  }
+
+  .models-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+  }
+
+  .models-col-left {
+    max-width: 100%;
+    gap: 1.2rem;
+  }
+
+  /* Hide desktop stacked button tablist on mobile */
+  .models-tab-list {
+    display: none;
+  }
+
+  /* Show mobile top horizontal tab buttons */
+  .models-mobile-nav {
+    display: flex;
+    gap: 0.6rem;
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 0.4rem;
+    scrollbar-width: none;
+  }
+
+  .models-mobile-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .models-mobile-tab-btn {
+    flex: 1;
+    min-height: 48px;
+    background: color-mix(in srgb, var(--surface) 90%, transparent);
+    border: 1px solid var(--line);
+    color: var(--muted);
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    touch-action: manipulation;
+  }
+
+  .models-mobile-tab-btn.is-active {
+    color: var(--text);
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+  }
+
+  .models-col-right {
+    gap: 1.5rem;
+  }
+
+  .silhouette-stage {
+    max-height: 240px;
+    margin: 0.5rem 0;
+  }
+
+  .models-rail-container {
+    display: none;
+  }
+
+  .spec-metrics-grid {
+    gap: 0.6rem;
+  }
+
+  .spec-metric-number {
+    font-size: 1.35rem;
+  }
+
+  .spec-actions-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.85rem;
+  }
+
+  .spec-actions-row .halcyon-reserve-pill {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .spec-disclaimer {
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .models-heading {
+    font-size: 1.45rem;
+  }
+
+  .spec-metrics-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .spec-metric-label {
+    font-size: 0.62rem;
+  }
+
+  .spec-metric-number {
+    font-size: 1.15rem;
+  }
+
+  .spec-metric-unit {
+    font-size: 0.72rem;
+  }
+}

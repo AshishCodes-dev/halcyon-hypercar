@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import Hero from '../components/hero/Hero';
+import Models from '../components/models/Models';
 
 const placeholderSections = [
-  { id: 'models', title: 'Models', subtitle: 'Bespoke Aerodynamic Monocoques' },
   { id: 'design', title: 'Design', subtitle: 'Form Perfected Through Fluid Dynamics' },
   { id: 'performance', title: 'Performance', subtitle: 'Sub-Two Second Acceleration & Active Vectoring' },
   { id: 'colors', title: 'Colors', subtitle: 'Five Bespoke Signature Finishes' },
@@ -18,7 +18,10 @@ export default function Home() {
       {/* 3D Cinematic Hero Section with ScrollTrigger scrub */}
       <Hero />
 
-      {/* Remaining 4 Placeholder Sections */}
+      {/* Models Lineup Section with GSAP pinned scrub */}
+      <Models />
+
+      {/* Remaining 3 Placeholder Sections */}
       {placeholderSections.map((section, index) => (
         <section
           key={section.id}
@@ -48,7 +51,7 @@ export default function Home() {
               fontWeight: 600,
             }}
           >
-            0{index + 2} / {section.id.toUpperCase()}
+            0{index + 3} / {section.id.toUpperCase()}
           </span>
 
           <h2
