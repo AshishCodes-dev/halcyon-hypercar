@@ -1,0 +1,514 @@
+/* ==========================================================================
+   HALCYON GALLERY SECTION STYLES
+   Horizontal chapters gallery with native scroll track, drag-to-explore,
+   varying editorial card proportions, layered parallax, and dynamic controls.
+   Zero hardcoded colors.
+   ========================================================================== */
+
+.gallery-section {
+  position: relative;
+  width: 100%;
+  min-height: 100svh;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(5rem, 4rem + 2vw, 6.5rem) 0 clamp(6.5rem, 9vw, 12rem) 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  z-index: 2;
+}
+
+/* --------------------------------------------------------------------------
+   HEADER BLOCK
+   -------------------------------------------------------------------------- */
+.gallery-header-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 680px;
+  padding: 0 clamp(1.5rem, 3.5vw, 4.5rem);
+  margin-bottom: clamp(1.5rem, 2.5vw, 2.5rem);
+  box-sizing: border-box;
+}
+
+.gallery-eyebrow {
+  font-family: var(--font-body);
+  font-size: clamp(0.7rem, 0.65rem + 0.2vw, 0.8rem);
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.gallery-eyebrow-accent {
+  width: 5px;
+  height: 5px;
+  background-color: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--accent);
+}
+
+.gallery-heading {
+  font-family: var(--font-body);
+  font-size: clamp(1.8rem, 1.4rem + 1.4vw, 2.75rem);
+  font-weight: 750;
+  letter-spacing: -0.035em;
+  color: var(--text);
+  line-height: 1.15;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35em;
+}
+
+/* Masked word reveal */
+.gallery-heading-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.gallery-heading-inner {
+  display: inline-block;
+  transform: translate3d(0, 115%, 0);
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gallery-section.is-entered .gallery-heading-inner {
+  transform: translate3d(0, 0, 0);
+}
+
+.gallery-heading-inner.word-delay-0 { transition-delay: 0.05s; }
+.gallery-heading-inner.word-delay-1 { transition-delay: 0.12s; }
+.gallery-heading-inner.word-delay-2 { transition-delay: 0.19s; }
+.gallery-heading-inner.word-delay-3 { transition-delay: 0.26s; }
+
+.gallery-disclaimer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.2rem;
+}
+
+.gallery-disclaimer {
+  font-family: var(--font-body);
+  font-size: clamp(0.74rem, 0.7rem + 0.15vw, 0.84rem);
+  color: var(--muted);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+/* Desktop Drag Hint */
+.gallery-desktop-hint {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: opacity 0.5s ease;
+  user-select: none;
+}
+
+.gallery-desktop-hint.is-faded {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (hover: none) or (pointer: coarse) {
+  .gallery-desktop-hint {
+    display: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   HORIZONTAL NATIVE SCROLL TRACK
+   -------------------------------------------------------------------------- */
+.gallery-track {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  cursor: grab;
+  overscroll-behavior-x: contain;
+  gap: clamp(1.5rem, 2.8vw, 3.2rem);
+  padding: 2rem clamp(2rem, 10vw, 15vw) 3rem clamp(2rem, 10vw, 15vw);
+  box-sizing: border-box;
+  outline: none;
+  position: relative;
+  z-index: 1;
+}
+
+.gallery-track::-webkit-scrollbar {
+  display: none;
+}
+
+.gallery-track.is-dragging {
+  cursor: grabbing;
+  user-select: none;
+  scroll-snap-type: none;
+}
+
+.gallery-track:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -4px;
+}
+
+/* --------------------------------------------------------------------------
+   CHAPTER CARD (Varying proportions & vertical rhythm)
+   -------------------------------------------------------------------------- */
+.chapter-card {
+  position: relative;
+  width: var(--card-width, 380px);
+  height: var(--card-height, 480px);
+  flex-shrink: 0;
+  scroll-snap-align: center;
+  border-radius: clamp(18px, 2vw, 24px);
+  border: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
+  background-color: var(--bg);
+  overflow: hidden;
+  margin: 0;
+  cursor: pointer;
+  box-sizing: border-box;
+  outline: none;
+
+  /* Editorial desktop vertical offset */
+  transform: translate3d(0, var(--card-offset-y, 0px), 0);
+
+  /* Stagger entrance clip-path */
+  opacity: 0;
+  clip-path: inset(0 0 0 100%);
+  transition:
+    clip-path 0.9s var(--card-delay, 0s) cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.9s var(--card-delay, 0s) cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+.gallery-section.is-entered .chapter-card {
+  opacity: 1;
+  clip-path: inset(0 0 0 0);
+}
+
+/* Desktop Hover Lift & Border Highlight */
+@media (hover: hover) and (pointer: fine) {
+  .gallery-section.is-entered .chapter-card:hover {
+    transform: translate3d(0, calc(var(--card-offset-y, 0px) - 8px), 0);
+    border-color: color-mix(in srgb, var(--text) 32%, transparent);
+    box-shadow: 0 16px 40px color-mix(in srgb, var(--bg) 80%, transparent);
+  }
+
+  .chapter-card:hover .chapter-scene-wrapper {
+    transform: scale(1.04);
+  }
+
+  .chapter-card:hover .chapter-subtitle {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .chapter-card:hover .chapter-card-accent-border {
+    transform: scaleX(1);
+  }
+}
+
+.chapter-card.is-active {
+  border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+.chapter-card.is-active .chapter-card-accent-border {
+  transform: scaleX(1);
+}
+
+.chapter-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+/* Scene Wrapper */
+.chapter-scene-wrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.chapter-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Bottom Vignette Readability Gradient */
+.chapter-card-vignette {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--bg) 25%, transparent) 0%,
+    transparent 40%,
+    color-mix(in srgb, var(--bg) 80%, transparent) 75%,
+    var(--bg) 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Cursor Spotlight */
+.chapter-card-spotlight {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle 200px at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--accent) 18%, transparent) 0%,
+    transparent 100%
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 3;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .chapter-card:hover .chapter-card-spotlight {
+    opacity: 1;
+  }
+}
+
+/* Bottom Accent Border Line */
+.chapter-card-accent-border {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 4;
+}
+
+/* Caption Block */
+.chapter-caption {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(1.2rem, 1.6vw, 1.8rem);
+  box-sizing: border-box;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.chapter-caption-top {
+  display: flex;
+  align-items: center;
+}
+
+.chapter-number {
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.chapter-caption-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.chapter-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 0.9rem + 1vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.chapter-subtitle {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: clamp(0.78rem, 0.74rem + 0.15vw, 0.88rem);
+  color: var(--muted);
+  line-height: 1.4;
+  opacity: 0.55;
+  transform: translate3d(0, 4px, 0);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+/* --------------------------------------------------------------------------
+   BOTTOM CONTROLS BAR (Counter, Rail, Arrow Buttons)
+   -------------------------------------------------------------------------- */
+.gallery-controls-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 clamp(1.5rem, 3.5vw, 4.5rem);
+  margin-top: 1rem;
+  box-sizing: border-box;
+  opacity: 0;
+  transform: translate3d(0, 16px, 0);
+  transition: opacity 0.6s 0.3s ease, transform 0.6s 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 2;
+}
+
+.gallery-section.is-entered .gallery-controls-bar {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.gallery-counter-rail-group {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 2vw, 1.8rem);
+}
+
+.gallery-counter-readout {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  letter-spacing: 0.18em;
+  color: var(--text);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+}
+
+.gallery-rail-track {
+  width: clamp(100px, 15vw, 180px);
+  height: 2px;
+  background-color: var(--line);
+  position: relative;
+  overflow: hidden;
+  border-radius: 1px;
+}
+
+.gallery-rail-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  transform: scaleX(0.2);
+  transform-origin: left;
+  will-change: transform;
+}
+
+/* Arrow Navigation Buttons */
+.gallery-nav-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.gallery-arrow-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--surface) 60%, transparent);
+  border: 1px solid var(--line);
+  color: var(--text);
+  cursor: pointer;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.gallery-arrow-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+}
+
+.gallery-arrow-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.gallery-arrow-btn:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+/* --------------------------------------------------------------------------
+   MOBILE / TABLET RESPONSIVE (<= 860px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 860px) {
+  .gallery-section {
+    padding: 3rem 0 clamp(5rem, 8vw, 8rem) 0;
+  }
+
+  .gallery-track {
+    gap: 1.25rem;
+    padding: 1rem 1.25rem 2rem 1.25rem;
+  }
+
+  .chapter-card {
+    width: clamp(280px, 78vw, 340px) !important;
+    height: min(54svh, 420px) !important;
+    transform: none !important;
+  }
+
+  .chapter-subtitle {
+    opacity: 0.85 !important;
+    transform: none !important;
+  }
+
+  .gallery-controls-bar {
+    padding: 0 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery-heading {
+    font-size: 1.55rem;
+  }
+
+  .chapter-title {
+    font-size: 1.2rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   PREFERS-REDUCED-MOTION
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .gallery-heading-inner {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .chapter-card {
+    opacity: 1 !important;
+    clip-path: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .chapter-card-spotlight {
+    display: none !important;
+  }
+}

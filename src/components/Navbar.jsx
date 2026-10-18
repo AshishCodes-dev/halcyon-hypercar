@@ -13,6 +13,7 @@ const navLinks = [
   { id: 'design', label: 'Design' },
   { id: 'performance', label: 'Performance' },
   { id: 'colors', label: 'Colors' },
+  { id: 'gallery', label: 'Gallery' },
 ];
 
 const allSections = [

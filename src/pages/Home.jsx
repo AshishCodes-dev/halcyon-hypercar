@@ -4,6 +4,7 @@ import Models from '../components/models/Models';
 import Design from '../components/design/Design';
 import Performance from '../components/performance/Performance';
 import Colors from '../components/colors/Colors';
+import Gallery from '../components/gallery/Gallery';
 
 export default function Home() {
   useEffect(() => {
@@ -26,6 +27,9 @@ export default function Home() {
 
       {/* Colors Finish Selector Section */}
       <Colors />
+
+      {/* Chapters Atmospheric Gallery Section */}
+      <Gallery />
     </main>
   );
 }

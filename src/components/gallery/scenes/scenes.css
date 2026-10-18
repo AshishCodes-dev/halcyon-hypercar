@@ -1,0 +1,197 @@
+/* ==========================================================================
+   HALCYON GALLERY SCENES STYLES
+   Parallax layer offsets, atmospheric pulses, rain streaks, and drifting mist.
+   Animations automatically pause when off-screen or tab is hidden.
+   Zero hardcoded colors.
+   ========================================================================== */
+
+.scene-stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  background-color: var(--bg);
+}
+
+.scene-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* --------------------------------------------------------------------------
+   PARALLAX LAYERS (Offset computed dynamically via CSS variable --p)
+   -------------------------------------------------------------------------- */
+.scene-layer {
+  transition: transform 0.15s ease-out;
+}
+
+.scene-layer-bg {
+  transform: translate3d(calc(var(--p, 0) * 12px), 0, 0);
+  will-change: transform;
+}
+
+.scene-layer-mid {
+  transform: translate3d(calc(var(--p, 0) * 26px), 0, 0);
+  will-change: transform;
+}
+
+.scene-layer-fg {
+  transform: translate3d(calc(var(--p, 0) * 44px), 0, 0);
+  will-change: transform;
+}
+
+.scene-layer-rain {
+  transform: translate3d(calc(var(--p, 0) * 34px), 0, 0);
+  will-change: transform;
+}
+
+/* --------------------------------------------------------------------------
+   NIGHT TUNNEL ANIMATIONS
+   -------------------------------------------------------------------------- */
+.tunnel-strip {
+  animation: tunnelStripPulse 3.5s ease-in-out infinite alternate;
+}
+
+@keyframes tunnelStripPulse {
+  0% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+    filter: drop-shadow(0 0 6px var(--accent));
+  }
+}
+
+.tunnel-far-dot {
+  filter: drop-shadow(0 0 6px var(--accent));
+}
+
+/* --------------------------------------------------------------------------
+   COAST DUSK ANIMATIONS
+   -------------------------------------------------------------------------- */
+.dusk-reflection-column {
+  animation: duskReflectPulse 4s ease-in-out infinite alternate;
+  transform-origin: 300px 420px;
+}
+
+@keyframes duskReflectPulse {
+  0% {
+    opacity: 0.6;
+    transform: scaleX(0.95);
+  }
+  100% {
+    opacity: 0.9;
+    transform: scaleX(1.05);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   RAIN DISTRICT ANIMATIONS
+   -------------------------------------------------------------------------- */
+.rain-streak-line {
+  animation: rainStreakFall var(--rain-dur, 1.5s) linear infinite;
+  animation-delay: var(--rain-delay, 0s);
+  will-change: transform;
+}
+
+@keyframes rainStreakFall {
+  0% {
+    transform: translate3d(0, -60px, 0);
+  }
+  100% {
+    transform: translate3d(-18px, 740px, 0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   SALT FLAT ANIMATIONS
+   -------------------------------------------------------------------------- */
+.salt-horizon-dot {
+  filter: drop-shadow(0 0 8px var(--accent));
+  animation: saltDotShimmer 3s ease-in-out infinite alternate;
+}
+
+@keyframes saltDotShimmer {
+  0% {
+    opacity: 0.8;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   SUMMIT ROAD ANIMATIONS
+   -------------------------------------------------------------------------- */
+.summit-mist-band {
+  will-change: transform;
+}
+
+.mist-drift-left {
+  animation: mistFloatLeft 20s ease-in-out infinite alternate;
+}
+
+.mist-drift-right {
+  animation: mistFloatRight 24s ease-in-out infinite alternate;
+}
+
+@keyframes mistFloatLeft {
+  0% {
+    transform: translate3d(-35px, 0, 0);
+  }
+  100% {
+    transform: translate3d(35px, 0, 0);
+  }
+}
+
+@keyframes mistFloatRight {
+  0% {
+    transform: translate3d(30px, 0, 0);
+  }
+  100% {
+    transform: translate3d(-30px, 0, 0);
+  }
+}
+
+.summit-star {
+  animation: starTwinkle 3s ease-in-out infinite alternate;
+}
+
+@keyframes starTwinkle {
+  0% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0.95;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   PAUSE CONTROLLER (When card is off-screen or tab is hidden)
+   -------------------------------------------------------------------------- */
+.scene-stage.is-paused * {
+  animation-play-state: paused !important;
+}
+
+/* --------------------------------------------------------------------------
+   PREFERS-REDUCED-MOTION
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .scene-stage * {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .scene-layer-bg,
+  .scene-layer-mid,
+  .scene-layer-fg,
+  .scene-layer-rain {
+    transform: none !important;
+  }
+}

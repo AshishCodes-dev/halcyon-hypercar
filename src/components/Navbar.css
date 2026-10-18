@@ -654,6 +654,23 @@
   }
 }
 
+/* Medium Screens (861px to 1024px): Tighten link padding and hide breadcrumb to prevent collision */
+@media (min-width: 861px) and (max-width: 1024px) {
+  .navbar-breadcrumb-divider,
+  .navbar-breadcrumb {
+    display: none;
+  }
+
+  .navbar-container {
+    gap: 0.5rem;
+  }
+
+  .navbar-link {
+    padding: 0.4rem 0.65rem;
+    font-size: 0.78rem;
+  }
+}
+
 /* Small screens (<480px): Hide breadcrumb */
 @media (max-width: 480px) {
   .navbar-breadcrumb-divider,
