@@ -2,9 +2,9 @@ import { useEffect } from 'react';
 import Hero from '../components/hero/Hero';
 import Models from '../components/models/Models';
 import Design from '../components/design/Design';
+import Performance from '../components/performance/Performance';
 
 const placeholderSections = [
-  { id: 'performance', title: 'Performance', subtitle: 'Sub-Two Second Acceleration & Active Vectoring' },
   { id: 'colors', title: 'Colors', subtitle: 'Five Bespoke Signature Finishes' },
 ];
 
@@ -24,7 +24,10 @@ export default function Home() {
       {/* Design Blueprint Section with GSAP pinned scrub */}
       <Design />
 
-      {/* Remaining 2 Placeholder Sections */}
+      {/* Performance Launch Run Section with GSAP pinned scrub */}
+      <Performance />
+
+      {/* Remaining 1 Placeholder Section */}
       {placeholderSections.map((section, index) => (
         <section
           key={section.id}
@@ -54,7 +57,7 @@ export default function Home() {
               fontWeight: 600,
             }}
           >
-            0{index + 4} / {section.id.toUpperCase()}
+            0{index + 5} / {section.id.toUpperCase()}
           </span>
 
           <h2
