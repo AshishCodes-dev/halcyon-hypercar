@@ -1,0 +1,561 @@
+/* ==========================================================================
+   HALCYON DESIGN ANATOMY & BLUEPRINT SECTION
+   Technical drawing presentation with GSAP ScrollTrigger camera zoom,
+   dynamic SVG viewBox animation, blueprint dimension lines, and hotspot callouts.
+   ========================================================================== */
+
+/* Outer scroll wrapper for pinned desktop stage (400svh scrub distance) */
+.design-scroll-container {
+  position: relative;
+  width: 100%;
+  height: 400svh;
+  background-color: transparent;
+}
+
+/* Reduced motion or mobile normal flow container */
+.design-scroll-container.is-unpinned {
+  height: auto;
+  min-height: 100svh;
+  padding: clamp(4rem, 3rem + 4vw, 7rem) 0;
+}
+
+/* Pinned stage locked at top of viewport during scrub */
+.design-stage {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100svh;
+  min-height: 100svh;
+  overflow: hidden;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(5.2rem, 4.2rem + 2vw, 6.5rem) clamp(1.5rem, 3.5vw, 4.5rem) clamp(1.5rem, 2vw, 2.5rem);
+  box-sizing: border-box;
+  z-index: 2;
+}
+
+/* --------------------------------------------------------------------------
+   HEADER BLOCK
+   -------------------------------------------------------------------------- */
+.design-header-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 640px;
+}
+
+.design-eyebrow {
+  font-family: var(--font-body);
+  font-size: clamp(0.7rem, 0.65rem + 0.2vw, 0.8rem);
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.design-eyebrow-accent {
+  width: 5px;
+  height: 5px;
+  background-color: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--accent);
+}
+
+.design-heading {
+  font-family: var(--font-body);
+  font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.4rem);
+  font-weight: 750;
+  letter-spacing: -0.035em;
+  color: var(--text);
+  line-height: 1.15;
+  margin: 0;
+}
+
+.design-disclaimer {
+  font-family: var(--font-body);
+  font-size: clamp(0.74rem, 0.7rem + 0.15vw, 0.84rem);
+  color: var(--muted);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+/* --------------------------------------------------------------------------
+   DESKTOP MAIN ANATOMY STAGE
+   -------------------------------------------------------------------------- */
+.design-main-area {
+  display: grid;
+  grid-template-columns: 32% 68%;
+  gap: clamp(1.5rem, 2.5vw, 3.5rem);
+  width: 100%;
+  align-items: center;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Left Column: Stacked Anatomy Part Names */
+.design-parts-nav {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.6rem, 1.2vw, 1.4rem);
+}
+
+.design-part-btn {
+  background: transparent;
+  border: none;
+  padding: 0.35rem 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  user-select: none;
+}
+
+.design-part-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 6px;
+  border-radius: 4px;
+}
+
+.design-part-btn-index {
+  font-family: var(--font-body);
+  font-size: clamp(0.72rem, 0.68rem + 0.15vw, 0.82rem);
+  letter-spacing: 0.18em;
+  color: var(--muted);
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.design-part-btn.is-active .design-part-btn-index {
+  color: var(--accent);
+}
+
+.design-part-btn-name {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 1.1rem + 1.4vw, 2.5rem);
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  line-height: 1.05;
+  color: transparent;
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--text) 35%, transparent);
+  transition: color 0.4s ease, -webkit-text-stroke 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.design-part-btn:hover .design-part-btn-name {
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--text) 70%, transparent);
+}
+
+.design-part-btn.is-active .design-part-btn-name {
+  color: var(--text);
+  -webkit-text-stroke: 0;
+  transform: translateX(4px);
+}
+
+.design-part-marker {
+  width: 18px;
+  height: 2px;
+  background-color: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  border-radius: 1px;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.design-part-btn.is-active .design-part-marker {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+/* Right Area: Blueprint Stage & Callout HUD */
+.design-blueprint-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+
+/* --------------------------------------------------------------------------
+   BLUEPRINT CAR SVG VIEWPORT & ELEMENTS
+   -------------------------------------------------------------------------- */
+.blueprint-stage-viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1050 / 360;
+  max-height: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  touch-action: pan-y;
+}
+
+.blueprint-floor-glow {
+  position: absolute;
+  width: 86%;
+  height: 40%;
+  bottom: 8%;
+  left: 7%;
+  background: radial-gradient(
+    ellipse 65% 40% at 50% 50%,
+    color-mix(in srgb, var(--accent) 15%, transparent) 0%,
+    color-mix(in srgb, var(--accent) 3%, transparent) 55%,
+    transparent 80%
+  );
+  filter: blur(24px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.blueprint-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  z-index: 2;
+  will-change: viewBox;
+}
+
+.dimension-text {
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  font-weight: 500;
+  user-select: none;
+}
+
+/* Entrance draw-on line animation */
+.blueprint-svg.is-entered .blueprint-body-path {
+  stroke-dasharray: 2600;
+  stroke-dashoffset: 0;
+  animation: blueprintDrawOn 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes blueprintDrawOn {
+  0% {
+    stroke-dashoffset: 2600;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Hotspot pulse rings */
+.hotspot-pulse-ring {
+  animation: hotspotRingPulse 2s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes hotspotRingPulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 0.2;
+  }
+  100% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
+}
+
+.hotspot-core-dot {
+  box-shadow: 0 0 8px var(--accent);
+}
+
+/* --------------------------------------------------------------------------
+   DESKTOP CALLOUT TEXT BLOCK (Placed on empty side of stage)
+   -------------------------------------------------------------------------- */
+.design-callout-hud {
+  position: absolute;
+  z-index: 10;
+  pointer-events: none;
+  width: clamp(280px, 32vw, 380px);
+  background: color-mix(in srgb, var(--surface) 75%, transparent);
+  border: 1px solid color-mix(in srgb, var(--line) 90%, var(--accent) 10%);
+  padding: clamp(1rem, 1.4vw, 1.6rem);
+  border-radius: 4px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  animation: calloutSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes calloutSlideUp {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.design-callout-hud.placement-right {
+  top: 10%;
+  right: 2%;
+}
+
+.design-callout-hud.placement-left {
+  top: 10%;
+  left: 2%;
+}
+
+.design-callout-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.4rem;
+}
+
+.design-callout-index {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.design-callout-name {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.design-callout-tagline {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 0.9rem + 0.3vw, 1.25rem);
+  font-weight: 750;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.25;
+}
+
+.design-callout-text {
+  font-family: var(--font-body);
+  font-size: clamp(0.78rem, 0.74rem + 0.15vw, 0.88rem);
+  color: var(--muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   BOTTOM PROGRESS RAIL
+   -------------------------------------------------------------------------- */
+.design-rail-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  width: 100%;
+  padding-top: 0.8rem;
+}
+
+.design-rail-track {
+  width: 100%;
+  height: 2px;
+  background-color: var(--line);
+  position: relative;
+  overflow: hidden;
+  border-radius: 1px;
+}
+
+.design-rail-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  will-change: transform;
+}
+
+.design-rail-steps {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.design-rail-step-btn {
+  background: transparent;
+  border: none;
+  padding: 0.2rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+  outline: none;
+}
+
+.design-rail-step-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.design-rail-step-btn.is-active {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.design-rail-step-accent {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: var(--accent);
+  box-shadow: 0 0 6px var(--accent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.design-rail-step-btn.is-active .design-rail-step-accent {
+  opacity: 1;
+}
+
+/* --------------------------------------------------------------------------
+   MOBILE / TABLET RESPONSIVE (<= 860px)
+   -------------------------------------------------------------------------- */
+.design-mobile-chips {
+  display: none;
+}
+
+.design-mobile-callout {
+  display: none;
+}
+
+@media (max-width: 860px) {
+  .design-stage {
+    position: relative;
+    top: auto;
+    height: auto;
+    min-height: auto;
+    padding: 1.5rem 1.25rem;
+    overflow: visible;
+  }
+
+  .design-main-area {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  /* Hide desktop vertical list on mobile */
+  .design-parts-nav {
+    display: none;
+  }
+
+  /* Show horizontally scrollable chips */
+  .design-mobile-chips {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 0.4rem;
+    scrollbar-width: none;
+  }
+
+  .design-mobile-chips::-webkit-scrollbar {
+    display: none;
+  }
+
+  .design-mobile-chip-btn {
+    flex-shrink: 0;
+    min-height: 48px;
+    padding: 0 1rem;
+    background: color-mix(in srgb, var(--surface) 90%, transparent);
+    border: 1px solid var(--line);
+    color: var(--muted);
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    border-radius: 4px;
+    cursor: pointer;
+    touch-action: manipulation;
+    transition: all 0.3s ease;
+  }
+
+  .design-mobile-chip-btn.is-active {
+    color: var(--text);
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+  }
+
+  /* Hide desktop overlay callout on mobile */
+  .design-callout-hud {
+    display: none;
+  }
+
+  /* Show mobile callout panel placed neatly beneath the stage */
+  .design-mobile-callout {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    width: 100%;
+    background: color-mix(in srgb, var(--surface) 65%, transparent);
+    border: 1px solid var(--line);
+    padding: 1.2rem;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  .blueprint-stage-viewport {
+    max-height: 260px;
+  }
+
+  .design-rail-container {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .design-heading {
+    font-size: 1.45rem;
+  }
+
+  .design-mobile-callout {
+    padding: 1rem;
+  }
+}
+
+/* Reduced motion disables pulse and draw-on */
+@media (prefers-reduced-motion: reduce) {
+  .hotspot-pulse-ring {
+    animation: none !important;
+  }
+  .blueprint-body-path {
+    animation: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+  .design-callout-hud {
+    animation: none !important;
+  }
+}
