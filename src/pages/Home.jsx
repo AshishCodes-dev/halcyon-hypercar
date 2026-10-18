@@ -5,6 +5,7 @@ import Design from '../components/design/Design';
 import Performance from '../components/performance/Performance';
 import Colors from '../components/colors/Colors';
 import Gallery from '../components/gallery/Gallery';
+import Materials from '../components/materials/Materials';
 
 export default function Home() {
   useEffect(() => {
@@ -30,6 +31,9 @@ export default function Home() {
 
       {/* Chapters Atmospheric Gallery Section */}
       <Gallery />
+
+      {/* Tactile Materials Section */}
+      <Materials />
     </main>
   );
 }

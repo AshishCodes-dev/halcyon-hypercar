@@ -16,9 +16,15 @@ const navLinks = [
   { id: 'gallery', label: 'Gallery' },
 ];
 
+const mobileNavLinks = [
+  ...navLinks,
+  { id: 'materials', label: 'Materials' },
+];
+
 const allSections = [
   { id: 'top', label: 'Home' },
   ...navLinks,
+  { id: 'materials', label: 'Materials' },
 ];
 
 export default function Navbar() {
@@ -540,7 +546,7 @@ export default function Navbar() {
               {/* Mobile Links List */}
               <nav aria-label="Mobile Primary">
                 <ul className="mobile-links-list">
-                  {navLinks.map((link, idx) => (
+                  {mobileNavLinks.map((link, idx) => (
                     <motion.li
                       key={link.id}
                       className="mobile-link-item"

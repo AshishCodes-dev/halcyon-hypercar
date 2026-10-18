@@ -1,0 +1,462 @@
+/* ==========================================================================
+   HALCYON MATERIALS SECTION STYLES
+   Tactile swatches, asymmetric editorial grid, and macro-lens optics.
+   Zero hex/rgba literals. Tokens and color-mix only.
+   ========================================================================== */
+
+.materials-section {
+  position: relative;
+  width: 100%;
+  padding: clamp(80px, 10svh, 140px) clamp(20px, 4vw, 64px);
+  background-color: transparent;
+  color: var(--text);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.materials-container {
+  max-width: 1380px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================================================================
+   SECTION HEADER
+   ========================================================================== */
+
+.materials-header {
+  margin-bottom: clamp(36px, 5svh, 60px);
+}
+
+.materials-eyebrow {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+.materials-heading-mask {
+  overflow: hidden;
+  margin: 0 0 14px 0;
+}
+
+.materials-heading {
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  font-size: clamp(2rem, 1.6rem + 2.2vw, 3.8rem);
+  line-height: 1.08;
+  color: var(--text);
+  transform: translateY(115%);
+  transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+}
+
+.materials-section.is-entered .materials-heading {
+  transform: translateY(0);
+}
+
+.materials-header-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.materials-disclaimer {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--muted);
+  letter-spacing: 0.01em;
+}
+
+/* Hints (desktop vs touch) */
+.materials-hint {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: color-mix(in srgb, var(--accent) 80%, var(--text));
+  letter-spacing: 0.02em;
+  opacity: 0;
+  transition: opacity 0.5s ease 0.7s;
+}
+
+.materials-section.is-entered .materials-hint {
+  opacity: 1;
+}
+
+.materials-hint.is-faded {
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
+.hint-touch {
+  display: none;
+}
+
+.hint-desktop {
+  display: inline;
+}
+
+@media (hover: none) or (pointer: coarse) {
+  .hint-desktop {
+    display: none;
+  }
+  .hint-touch {
+    display: inline;
+  }
+}
+
+/* ==========================================================================
+   ASYMMETRIC GRID LAYOUT (Desktop >= 861px)
+   ========================================================================== */
+
+.materials-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: clamp(14px, 1.6vw, 24px);
+  width: 100%;
+}
+
+.material-tile {
+  grid-column: var(--tile-span);
+  height: var(--tile-height);
+  transform: translateY(var(--tile-offset-y));
+  border-radius: 24px;
+  position: relative;
+  outline: none;
+  touch-action: pan-y;
+  cursor: crosshair;
+  background-color: var(--surface);
+  border: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
+  box-sizing: border-box;
+
+  /* Directional clip-path entrance reveal */
+  will-change: clip-path;
+}
+
+.material-tile.origin-left {
+  clip-path: inset(0 100% 0 0);
+}
+.material-tile.origin-top {
+  clip-path: inset(0 0 100% 0);
+}
+.material-tile.origin-bottom {
+  clip-path: inset(100% 0 0 0);
+}
+.material-tile.origin-right {
+  clip-path: inset(0 0 0 100%);
+}
+
+.material-tile.is-entered {
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 0.75s cubic-bezier(0.16, 1, 0.3, 1) var(--tile-delay);
+}
+
+.material-tile:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+/* ==========================================================================
+   TILE CARD INNER (Perspective & 3D Tilt)
+   ========================================================================== */
+
+.material-tile-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transform: perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  will-change: transform;
+}
+
+/* Base Texture */
+.material-texture-base {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Specular Highlight Sheen */
+.material-specular-sheen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  mix-blend-mode: screen;
+  background: radial-gradient(
+    circle 200px at var(--sheen-x, 50%) var(--sheen-y, 50%),
+    color-mix(in srgb, var(--text) 22%, transparent) 0%,
+    transparent 100%
+  );
+  opacity: 0.6;
+}
+
+/* Macro Lens Magnification (2.4x) */
+.material-lens-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  clip-path: circle(75px at var(--mx, 50%) var(--my, 50%));
+  opacity: 0;
+  transform: scale(0.96);
+  transition: opacity 0.22s ease, transform 0.22s ease;
+  will-change: clip-path, opacity, transform;
+}
+
+.material-lens-container.is-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.material-lens-zoom {
+  position: absolute;
+  inset: 0;
+  transform: scale(2.4);
+  transform-origin: var(--mx, 50%) var(--my, 50%);
+  will-change: transform-origin;
+}
+
+/* Lens Reticle & Crosshair */
+.material-lens-reticle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 4;
+  border: 1px solid color-mix(in srgb, var(--text) 40%, transparent);
+  box-shadow:
+    inset 0 0 16px color-mix(in srgb, var(--bg) 45%, transparent),
+    0 10px 30px color-mix(in srgb, var(--bg) 80%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent);
+  transform: translate3d(calc(var(--mx, 50%) - 75px), calc(var(--my, 50%) - 75px), 0);
+  opacity: 0;
+  transition: opacity 0.22s ease;
+  will-change: transform, opacity;
+}
+
+.material-lens-reticle.is-visible {
+  opacity: 1;
+}
+
+.reticle-tick {
+  position: absolute;
+  background-color: color-mix(in srgb, var(--text) 55%, transparent);
+  pointer-events: none;
+}
+
+.reticle-tick.tick-top {
+  width: 1px;
+  height: 6px;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.reticle-tick.tick-bottom {
+  width: 1px;
+  height: 6px;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.reticle-tick.tick-left {
+  width: 6px;
+  height: 1px;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.reticle-tick.tick-right {
+  width: 6px;
+  height: 1px;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.reticle-center-dot {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--accent);
+  box-shadow: 0 0 6px var(--accent);
+}
+
+/* Caption Readability Vignette Gradient */
+.material-caption-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  background: linear-gradient(
+    180deg,
+    transparent 35%,
+    color-mix(in srgb, var(--bg) 75%, transparent) 75%,
+    color-mix(in srgb, var(--bg) 95%, transparent) 100%
+  );
+}
+
+/* One-Time Light Sweep Animation */
+.material-light-sweep {
+  position: absolute;
+  inset: -80%;
+  pointer-events: none;
+  z-index: 6;
+  background: linear-gradient(
+    115deg,
+    transparent 42%,
+    color-mix(in srgb, var(--text) 24%, transparent) 50%,
+    transparent 58%
+  );
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.material-light-sweep.is-sweeping {
+  animation: material-sweep 0.85s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes material-sweep {
+  0% {
+    transform: translateX(-60%);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(60%);
+    opacity: 0;
+  }
+}
+
+/* Caption Elements */
+.material-tile-caption {
+  position: absolute;
+  inset: 0;
+  padding: clamp(16px, 2.2vw, 28px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 7;
+}
+
+.material-tile-number {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  color: color-mix(in srgb, var(--text) 60%, transparent);
+}
+
+.material-tile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.material-tile-name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(0.95rem, 0.8rem + 0.75vw, 1.35rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.material-tile-note {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: clamp(0.8rem, 0.75rem + 0.2vw, 0.9rem);
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* ==========================================================================
+   MOBILE & TABLET ADAPTATION (<= 860px)
+   ========================================================================== */
+
+@media (max-width: 860px) {
+  .materials-section {
+    padding: 64px 20px;
+  }
+
+  .materials-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .material-tile {
+    width: 100%;
+    height: clamp(220px, 28svh, 280px) !important;
+    transform: none !important;
+    border-radius: 20px;
+  }
+
+  .material-tile-card {
+    transform: none !important;
+  }
+}
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .materials-heading {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .materials-hint {
+    transition: opacity 0.3s ease !important;
+  }
+
+  .material-tile {
+    clip-path: none !important;
+    transition: none !important;
+  }
+
+  .material-tile-card {
+    transform: none !important;
+  }
+
+  .material-specular-sheen {
+    display: none !important;
+  }
+
+  .material-light-sweep {
+    display: none !important;
+  }
+
+  .material-lens-container {
+    transition: opacity 0.2s ease !important;
+    transform: none !important;
+  }
+}
