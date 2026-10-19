@@ -11,7 +11,7 @@ import Footer from '../components/footer/Footer';
 
 export default function Home() {
   useEffect(() => {
-    document.title = 'Halcyon | Hypercar';
+    document.title = 'Halcyon | Concept Electric Hypercar';
   }, []);
 
   return (

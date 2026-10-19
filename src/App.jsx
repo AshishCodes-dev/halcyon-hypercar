@@ -6,7 +6,9 @@ import { useAuth } from './hooks/useAuth';
 import SmoothScroll from './components/SmoothScroll';
 import Navbar from './components/Navbar';
 import SiteBackground from './components/SiteBackground';
+import ErrorBoundary from './components/ErrorBoundary';
 import Home from './pages/Home';
+import NotFound from './pages/NotFound';
 
 // Lazy-load ONLY the Login page
 const Login = lazy(() => import('./pages/Login'));
@@ -32,24 +34,27 @@ function AppContent() {
       {!isLoginPage && <SiteBackground variant="site" />}
       {!isLoginPage && <Navbar />}
       <div style={{ position: 'relative', zIndex: 1 }}>
-        <Suspense
-          fallback={
-            <div
-              style={{
-                position: 'fixed',
-                inset: 0,
-                width: '100vw',
-                height: '100vh',
-                backgroundColor: 'var(--bg)',
-              }}
-            />
-          }
-        >
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-          </Routes>
-        </Suspense>
+        <ErrorBoundary>
+          <Suspense
+            fallback={
+              <div
+                style={{
+                  position: 'fixed',
+                  inset: 0,
+                  width: '100vw',
+                  height: '100vh',
+                  backgroundColor: 'var(--bg)',
+                }}
+              />
+            }
+          >
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+        </ErrorBoundary>
       </div>
     </>
   );

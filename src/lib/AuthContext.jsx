@@ -44,11 +44,13 @@ export function AuthProvider({ children }) {
 
   const signInWithGoogle = async () => {
     if (!isFirebaseConfigured || !auth || !googleProvider) {
-      console.warn(
-        `[Halcyon Auth] Sign-in is not configured yet. Missing environment variables:\n` +
-          missingEnvVars.map((v) => `  - ${v}`).join('\n') +
-          `\nPlease configure them in your .env file.`
-      );
+      if (import.meta.env.DEV) {
+        console.warn(
+          `[Halcyon Auth] Sign-in is not configured yet. Missing environment variables:\n` +
+            missingEnvVars.map((v) => `  - ${v}`).join('\n') +
+            `\nPlease configure them in your .env file.`
+        );
+      }
       return { success: false, error: 'Sign-in is not configured yet.' };
     }
 
