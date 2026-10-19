@@ -8,6 +8,9 @@ export default function ReserveButton({
   isMobile = false,
   label = 'Reserve',
   onClick = null,
+  type = 'button',
+  disabled = false,
+  loading = false,
 }) {
   const shouldReduceMotion = useReducedMotion();
   const buttonRef = useRef(null);
@@ -54,11 +57,15 @@ export default function ReserveButton({
   };
 
   const handleClick = (e) => {
+    if (disabled || loading) {
+      e.preventDefault();
+      return;
+    }
     if (onClick) {
       onClick(e);
-    } else {
+    } else if (type !== 'submit') {
       e.preventDefault();
-      scrollToTarget('#colors', -65);
+      scrollToTarget('#reserve', -65);
     }
   };
 
@@ -67,7 +74,8 @@ export default function ReserveButton({
   return (
     <motion.button
       ref={buttonRef}
-      type="button"
+      type={type}
+      disabled={disabled || loading}
       className={`halcyon-reserve-pill ${isMobile ? 'is-mobile' : ''} ${isHovered ? 'is-hovered' : ''}`}
       onClick={handleClick}
       onMouseMove={handleMouseMove}
@@ -76,13 +84,15 @@ export default function ReserveButton({
       style={{
         x: shouldReduceMotion || isMobile || isTouch ? 0 : smoothX,
         y: shouldReduceMotion || isMobile || isTouch ? 0 : smoothY,
+        opacity: disabled || loading ? 0.65 : 1,
+        cursor: disabled || loading ? 'not-allowed' : 'pointer',
       }}
-      whileTap={shouldReduceMotion ? undefined : { scale: 0.96 }}
+      whileTap={shouldReduceMotion || disabled || loading ? undefined : { scale: 0.96 }}
       transition={{ type: 'spring', stiffness: 450, damping: 25 }}
       aria-label="Reserve your Halcyon hypercar allocation"
     >
       {/* Idle expanding pulse ring (paused on hover and reduced motion) */}
-      {!shouldReduceMotion && !isHovered && (
+      {!shouldReduceMotion && !isHovered && !loading && (
         <motion.span
           className="reserve-pulse-ring"
           animate={{
@@ -100,7 +110,7 @@ export default function ReserveButton({
       )}
 
       {/* Diagonal light sweep sheen on hover */}
-      {!shouldReduceMotion && isHovered && (
+      {!shouldReduceMotion && isHovered && !loading && (
         <motion.span
           className="reserve-sweep-beam"
           initial={{ x: '-140%', opacity: 0 }}
@@ -114,7 +124,7 @@ export default function ReserveButton({
       <span className="reserve-label-mask" aria-hidden="true">
         <motion.span
           className="reserve-label-roll"
-          animate={isHovered && !shouldReduceMotion ? { y: '-50%' } : { y: '0%' }}
+          animate={isHovered && !shouldReduceMotion && !loading ? { y: '-50%' } : { y: '0%' }}
           transition={{ duration: 0.35, ease: easeLuxury }}
         >
           <span className="reserve-text-line">{label}</span>
@@ -125,18 +135,42 @@ export default function ReserveButton({
       {/* Screen-reader accessible label */}
       <span className="sr-only">{label}</span>
 
-      {/* Right 30px Black Circle with Lucide ArrowUpRight */}
+      {/* Right 30px Black Circle with Lucide ArrowUpRight or Loading Spinner */}
       <motion.span
         className="reserve-icon-circle"
         animate={
-          isHovered && !shouldReduceMotion
+          isHovered && !shouldReduceMotion && !loading
             ? { rotate: 45, scale: 1.08 }
             : { rotate: 0, scale: 1 }
         }
         transition={{ type: 'spring', stiffness: 400, damping: 22 }}
         aria-hidden="true"
       >
-        <ArrowUpRight className="reserve-arrow-svg" size={17} strokeWidth={2.6} />
+        {loading ? (
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            style={{
+              animation: 'reserve-spin 0.8s linear infinite',
+              display: 'block',
+            }}
+          >
+            <circle
+              cx="8"
+              cy="8"
+              r="6"
+              stroke="var(--accent)"
+              strokeWidth="2"
+              strokeDasharray="26"
+              strokeDashoffset="13"
+              strokeLinecap="round"
+            />
+          </svg>
+        ) : (
+          <ArrowUpRight className="reserve-arrow-svg" size={17} strokeWidth={2.6} />
+        )}
       </motion.span>
     </motion.button>
   );

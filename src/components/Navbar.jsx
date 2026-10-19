@@ -25,6 +25,7 @@ const allSections = [
   { id: 'top', label: 'Home' },
   ...navLinks,
   { id: 'materials', label: 'Materials' },
+  { id: 'reserve', label: 'Reserve' },
 ];
 
 export default function Navbar() {
@@ -414,7 +415,7 @@ export default function Navbar() {
             <AccentSwitcher onAccentChange={handleRipple} />
 
             {/* Reserve Button */}
-            <ReserveButton onClick={(e) => handleNavClick(e, 'colors')} />
+            <ReserveButton onClick={(e) => handleNavClick(e, 'reserve')} />
 
             {/* Auth State: Sign in OR Avatar Dropdown */}
             {user ? (
@@ -594,7 +595,7 @@ export default function Navbar() {
                 <ReserveButton
                   isMobile={true}
                   label="Reserve Your Halcyon"
-                  onClick={(e) => handleNavClick(e, 'colors')}
+                  onClick={(e) => handleNavClick(e, 'reserve')}
                 />
 
                 {user ? (

@@ -6,6 +6,7 @@ import Performance from '../components/performance/Performance';
 import Colors from '../components/colors/Colors';
 import Gallery from '../components/gallery/Gallery';
 import Materials from '../components/materials/Materials';
+import Reserve from '../components/reserve/Reserve';
 
 export default function Home() {
   useEffect(() => {
@@ -34,6 +35,9 @@ export default function Home() {
 
       {/* Tactile Materials Section */}
       <Materials />
+
+      {/* Allocation Reservation Section */}
+      <Reserve />
     </main>
   );
 }
