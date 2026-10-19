@@ -8,7 +8,7 @@
   position: relative;
   width: 100%;
   min-height: 100svh;
-  padding: clamp(80px, 10svh, 140px) clamp(20px, 4vw, 64px) clamp(140px, 18svh, 240px);
+  padding: clamp(80px, 10svh, 140px) clamp(20px, 4vw, 64px);
   background-color: transparent;
   color: var(--text);
   box-sizing: border-box;
@@ -490,7 +490,7 @@
 
 @media (max-width: 860px) {
   .reserve-section {
-    padding: 64px 20px clamp(120px, 16svh, 180px);
+    padding: 64px 20px;
   }
 
   .reserve-grid {

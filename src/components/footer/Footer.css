@@ -1,0 +1,371 @@
+/* ==========================================================================
+   HALCYON FOOTER STYLES
+   Minimal finale footer with giant light-filled cropped wordmark.
+   Zero hex/rgba literals. Tokens and color-mix only.
+   ========================================================================== */
+
+.footer-section {
+  position: relative;
+  width: 100%;
+  border-top: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
+  background-color: transparent;
+  color: var(--text);
+  box-sizing: border-box;
+  overflow: hidden;
+  padding-top: clamp(48px, 6svh, 80px);
+  padding-bottom: max(16px, env(safe-area-inset-bottom, 16px));
+}
+
+.footer-container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 4vw, 64px);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   TOP ROW: Brand Year & Back to Top
+   ========================================================================== */
+
+.footer-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: clamp(28px, 4svh, 44px);
+  border-bottom: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+}
+
+.footer-brand-year {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.footer-back-to-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 8px 0;
+  transition: color 0.25s ease;
+}
+
+.footer-back-to-top:hover {
+  color: var(--accent);
+}
+
+.footer-back-to-top:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.back-to-top-icon {
+  transition: transform 0.25s ease;
+}
+
+.footer-back-to-top:hover .back-to-top-icon {
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   MIDDLE ROW: Link Groups & Legal Credits
+   ========================================================================== */
+
+.footer-middle-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 64px);
+  padding: clamp(36px, 5svh, 60px) 0 clamp(24px, 3svh, 40px);
+  align-items: start;
+}
+
+.footer-nav-groups {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(32px, 4.5vw, 64px);
+  flex-wrap: wrap;
+}
+
+.footer-link-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-group-label {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.footer-links-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-link-item {
+  margin: 0;
+}
+
+/* Vercel-style underline-draw hover */
+.footer-link {
+  position: relative;
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1.1rem);
+  color: var(--text);
+  text-decoration: none;
+  padding: 2px 0;
+  transition: color 0.25s ease;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.footer-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.footer-link:hover {
+  color: var(--text);
+}
+
+.footer-link:hover::after,
+.footer-link:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.footer-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.footer-account-user {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+/* Right Side: Credit & Legal Line */
+.footer-meta-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  gap: 8px;
+}
+
+.footer-credit-line {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.footer-legal-line {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: color-mix(in srgb, var(--muted) 80%, transparent);
+  line-height: 1.45;
+  max-width: 360px;
+}
+
+/* ==========================================================================
+   BOTTOM AREA: Copyright & Giant Cropped Wordmark
+   ========================================================================== */
+
+.footer-bottom-area {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+  margin-top: clamp(16px, 2svh, 28px);
+}
+
+.footer-copyright {
+  margin: 0 0 12px 0;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  color: color-mix(in srgb, var(--muted) 75%, transparent);
+  letter-spacing: 0.02em;
+}
+
+/* Giant Cropped Wordmark Container */
+.footer-wordmark-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  cursor: crosshair;
+  user-select: none;
+  /* Bottom crop: cuts off bottom ~20% of letters so they rise from the page edge */
+  height: clamp(80px, 12vw, 190px);
+}
+
+.footer-wordmark-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.wordmark-mask-text {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 154px;
+}
+
+/* Base outline layer with self-drawing entrance */
+.wordmark-base-outline {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 154px;
+  fill: transparent;
+  stroke: color-mix(in srgb, var(--text) 35%, transparent);
+  stroke-width: 1px;
+  stroke-dasharray: 850;
+  stroke-dashoffset: 850;
+  transition: stroke-dashoffset 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.35s;
+}
+
+.footer-wordmark-wrapper.is-entered .wordmark-base-outline {
+  stroke-dashoffset: 0;
+}
+
+/* One-time entrance sweep across letters */
+.wordmark-entrance-sweep {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+@keyframes wordmark-sweep-anim {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.footer-wordmark-wrapper.is-entered .wordmark-entrance-sweep {
+  animation: wordmark-sweep-anim 1.1s cubic-bezier(0.16, 1, 0.3, 1) 1.65s forwards;
+}
+
+/* Interactive Light Layer */
+.wordmark-light-layer {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.wordmark-light-layer.is-active {
+  opacity: 1;
+}
+
+.wordmark-light-circle {
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--accent) 55%, transparent));
+}
+
+/* Touch devices light active automatically */
+@media (pointer: coarse) {
+  .wordmark-light-layer {
+    opacity: 0.85;
+  }
+}
+
+/* ==========================================================================
+   MOBILE & TABLET ADAPTATION (<= 860px)
+   ========================================================================== */
+
+@media (max-width: 860px) {
+  .footer-middle-row {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    padding: 32px 0 20px;
+  }
+
+  .footer-nav-groups {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 28px;
+    width: 100%;
+  }
+
+  .footer-link {
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .footer-meta-block {
+    align-items: flex-start;
+    text-align: left;
+    margin-top: 8px;
+  }
+
+  .footer-wordmark-wrapper {
+    height: clamp(65px, 14vw, 100px);
+    margin-top: 12px;
+  }
+}
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-link::after {
+    transition: none !important;
+  }
+
+  .wordmark-base-outline {
+    stroke-dashoffset: 0 !important;
+    transition: none !important;
+  }
+
+  .wordmark-entrance-sweep {
+    display: none !important;
+  }
+
+  .wordmark-light-layer {
+    opacity: 0.75 !important;
+    transition: none !important;
+  }
+
+  .back-to-top-icon {
+    transition: none !important;
+  }
+}
