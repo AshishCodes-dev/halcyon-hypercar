@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { ThemeProvider } from './lib/ThemeContext';
 import { AuthProvider } from './lib/AuthContext';
@@ -6,7 +7,9 @@ import SmoothScroll from './components/SmoothScroll';
 import Navbar from './components/Navbar';
 import SiteBackground from './components/SiteBackground';
 import Home from './pages/Home';
-import Login from './pages/Login';
+
+// Lazy-load ONLY the Login page
+const Login = lazy(() => import('./pages/Login'));
 
 function AppContent() {
   const { loading } = useAuth();
@@ -29,10 +32,24 @@ function AppContent() {
       {!isLoginPage && <SiteBackground variant="site" />}
       {!isLoginPage && <Navbar />}
       <div style={{ position: 'relative', zIndex: 1 }}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-        </Routes>
+        <Suspense
+          fallback={
+            <div
+              style={{
+                position: 'fixed',
+                inset: 0,
+                width: '100vw',
+                height: '100vh',
+                backgroundColor: 'var(--bg)',
+              }}
+            />
+          }
+        >
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+          </Routes>
+        </Suspense>
       </div>
     </>
   );
