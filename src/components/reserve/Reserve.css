@@ -301,7 +301,7 @@
 
 .field-error-message {
   position: absolute;
-  bottom: -20px;
+  top: calc(100% + 6px);
   left: 0;
   font-family: var(--font-body);
   font-size: 0.78rem;
@@ -498,42 +498,117 @@
   .reserve-grid {
     display: flex;
     flex-direction: column;
-    gap: 48px;
-    align-items: center;
+    gap: 36px;
+    align-items: stretch;
   }
 
   .reserve-left-col {
-    align-items: center;
-    text-align: center;
+    align-items: flex-start;
+    text-align: left;
   }
 
   .reserve-disclaimer {
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 0;
+    margin-right: 0;
+    text-align: left;
+  }
+
+  .tick-ring-wrapper {
+    align-self: center;
   }
 
   .reserve-right-col {
-    align-items: center;
+    align-items: flex-start;
+    width: 100%;
   }
 
   .reserve-form-wrapper {
     max-width: 100%;
+    width: 100%;
+  }
+
+  .reserve-form {
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .form-input {
+    border: none !important;
+    outline: none !important;
+    border-radius: 0;
+    -webkit-appearance: none;
+    appearance: none;
+    box-shadow: none !important;
+  }
+
+  .field-border-base {
+    height: 1px;
+  }
+
+  .form-field.has-error .field-border-base {
+    background-color: var(--danger);
+  }
+
+  .form-field.has-error .field-border-accent {
+    background-color: var(--danger);
+    box-shadow: 0 0 6px var(--danger);
+  }
+
+  .field-error-message {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    bottom: auto;
   }
 
   .model-radiogroup {
-    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 6px;
+    width: 100%;
   }
 
-  .finish-radiogroup {
-    justify-content: center;
+  .model-pill-btn {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 0 6px;
+    font-size: clamp(0.68rem, 2.6vw, 0.78rem);
+    letter-spacing: 0.08em;
+    text-align: center;
+    white-space: nowrap;
   }
 
   .finish-group-header {
-    justify-content: space-around;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .finish-group-header .form-group-title {
+    margin-bottom: 0;
+  }
+
+  .finish-radiogroup {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
   }
 
   .form-submit-row {
     display: flex;
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .form-submit-row .halcyon-reserve-pill {
+    width: 100%;
     justify-content: center;
   }
 }
