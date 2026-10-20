@@ -318,6 +318,10 @@
    RESPONSIVE LAYOUT BREAKPOINTS
    -------------------------------------------------------------------------- */
 @media (max-width: 860px) {
+  .hero-scroll-container {
+    height: 140svh;
+  }
+
   .hero-hud-layer {
     padding: 1.2rem;
   }

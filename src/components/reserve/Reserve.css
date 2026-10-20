@@ -490,7 +490,9 @@
 
 @media (max-width: 860px) {
   .reserve-section {
-    padding: 64px 20px;
+    min-height: auto;
+    padding-block: clamp(56px, 14vw, 96px);
+    padding-inline: 1.25rem;
   }
 
   .reserve-grid {

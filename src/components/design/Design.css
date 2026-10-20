@@ -449,12 +449,19 @@
 }
 
 @media (max-width: 860px) {
+  .design-scroll-container.is-unpinned {
+    min-height: auto;
+    height: auto;
+    padding-block: clamp(56px, 14vw, 96px);
+    padding-inline: 0;
+  }
+
   .design-stage {
     position: relative;
     top: auto;
     height: auto;
     min-height: auto;
-    padding: 1.5rem 1.25rem;
+    padding: 0 1.25rem;
     overflow: visible;
   }
 

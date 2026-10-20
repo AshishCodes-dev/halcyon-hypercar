@@ -397,12 +397,19 @@
    MOBILE / TABLET RESPONSIVE (<= 860px)
    -------------------------------------------------------------------------- */
 @media (max-width: 860px) {
+  .performance-scroll-container.is-unpinned {
+    min-height: auto;
+    height: auto;
+    padding-block: clamp(56px, 14vw, 96px);
+    padding-inline: 0;
+  }
+
   .performance-stage {
     position: relative;
     top: auto;
     height: auto;
     min-height: auto;
-    padding: 1.5rem 1.25rem 2.5rem 1.25rem;
+    padding: 0 1.25rem;
     overflow: visible;
     gap: 2rem;
   }
