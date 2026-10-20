@@ -16,7 +16,10 @@ export default function NappaLeather() {
         overflow: 'hidden',
       }}
     >
-      {/* Pebbled Leather Grain with Diffuse Lighting */}
+      {/* High-visibility Layered CSS Radial Pebble Grain Pattern */}
+      <div className="nappa-leather-grain" aria-hidden="true" />
+
+      {/* SVG Diffused Lighting Texture (Desktop / WebGL fallback support) */}
       <svg
         width="100%"
         height="100%"
@@ -24,10 +27,11 @@ export default function NappaLeather() {
           position: 'absolute',
           inset: 0,
           display: 'block',
-          mixBlendMode: 'soft-light',
-          opacity: 0.35,
+          mixBlendMode: 'overlay',
+          opacity: 0.45,
           pointerEvents: 'none',
         }}
+        aria-hidden="true"
       >
         <defs>
           <filter id="halcyon-leather-turb" x="0%" y="0%" width="100%" height="100%">
@@ -51,7 +55,7 @@ export default function NappaLeather() {
         <rect
           width="100%"
           height="100%"
-          fill="color-mix(in srgb, var(--text) 25%, var(--bg))"
+          fill="color-mix(in srgb, var(--text) 35%, var(--bg))"
           filter="url(#halcyon-leather-turb)"
         />
       </svg>
@@ -63,8 +67,9 @@ export default function NappaLeather() {
           inset: 0,
           pointerEvents: 'none',
           background:
-            'radial-gradient(circle at 40% 30%, color-mix(in srgb, var(--text) 6%, transparent) 0%, transparent 70%)',
+            'radial-gradient(circle at 45% 35%, color-mix(in srgb, var(--text) 14%, transparent) 0%, transparent 70%)',
         }}
+        aria-hidden="true"
       />
 
       {/* Handcrafted Perimeter Saddle-Stitching Line */}
@@ -75,8 +80,9 @@ export default function NappaLeather() {
           position: 'absolute',
           inset: 0,
           pointerEvents: 'none',
-          filter: 'drop-shadow(0 1px 1px color-mix(in srgb, var(--bg) 95%, transparent))',
+          filter: 'drop-shadow(0 1px 2px color-mix(in srgb, var(--bg) 95%, transparent))',
         }}
+        aria-hidden="true"
       >
         <rect
           x="14"
@@ -86,9 +92,9 @@ export default function NappaLeather() {
           rx="12"
           ry="12"
           fill="none"
-          stroke="color-mix(in srgb, var(--text) 55%, transparent)"
-          strokeWidth="1.5"
-          strokeDasharray="6 4"
+          stroke="color-mix(in srgb, var(--text) 90%, transparent)"
+          strokeWidth="2.2"
+          strokeDasharray="8 5"
           strokeLinecap="round"
         />
       </svg>

@@ -10,6 +10,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
@@ -72,9 +73,14 @@ svg {
 input,
 button,
 textarea,
-select {
+select,
+a,
+[role="button"],
+[role="tab"],
+[role="radio"] {
   font: inherit;
   color: inherit;
+  touch-action: manipulation;
 }
 
 button {

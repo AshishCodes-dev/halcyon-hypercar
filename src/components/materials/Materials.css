@@ -397,6 +397,22 @@
   line-height: 1.4;
 }
 
+/* High-visibility Layered Pebble Grain for Nappa Leather */
+.nappa-leather-grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-color: color-mix(in srgb, var(--surface) 85%, var(--text) 8%);
+  background-image:
+    radial-gradient(2px 2px at 4px 4px, color-mix(in srgb, var(--text) 45%, transparent) 46%, transparent 52%),
+    radial-gradient(2px 2px at 12px 12px, color-mix(in srgb, var(--text) 38%, transparent) 46%, transparent 52%),
+    radial-gradient(2.4px 2.4px at 8px 16px, color-mix(in srgb, var(--text) 32%, transparent) 46%, transparent 52%),
+    radial-gradient(2.2px 2.2px at 16px 6px, color-mix(in srgb, var(--text) 40%, transparent) 46%, transparent 52%);
+  background-size: 16px 16px;
+  background-repeat: repeat;
+  opacity: 1;
+}
+
 /* ==========================================================================
    MOBILE & TABLET ADAPTATION (<= 860px)
    ========================================================================== */
@@ -423,6 +439,12 @@
 
   .material-tile-card {
     transform: none !important;
+  }
+
+  .material-lens-container,
+  .material-lens-reticle,
+  .material-specular-sheen {
+    display: none !important;
   }
 }
 
