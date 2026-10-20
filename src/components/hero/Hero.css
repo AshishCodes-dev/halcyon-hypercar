@@ -327,7 +327,7 @@
   }
 
   .hero-eyebrow {
-    top: 5rem;
+    top: calc(var(--nav-height, 64px) + env(safe-area-inset-top, 0px) + 16px);
     left: 1.25rem;
   }
 
@@ -357,8 +357,12 @@
   }
 
   .hero-bg-wordmark {
-    top: 32%;
-    font-size: clamp(3rem, 15vw, 6.5rem);
+    top: 26%;
+    font-size: clamp(2rem, 11vw, 4.8rem);
+    letter-spacing: clamp(0.04em, 1.2vw, 0.1em);
+    max-width: 92vw;
+    text-align: center;
+    box-sizing: border-box;
     -webkit-text-stroke: 1px color-mix(in srgb, var(--accent) 35%, transparent);
   }
 }

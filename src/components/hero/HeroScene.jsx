@@ -45,9 +45,10 @@ function SceneContent({
     canvas.height = 256;
     const ctx = canvas.getContext('2d');
     const grad = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
-    grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
-    grad.addColorStop(0.35, 'rgba(255, 255, 255, 0.55)');
-    grad.addColorStop(0.65, 'rgba(255, 255, 255, 0.12)');
+    grad.addColorStop(0, 'rgba(255, 255, 255, 0.85)');
+    grad.addColorStop(0.2, 'rgba(255, 255, 255, 0.45)');
+    grad.addColorStop(0.45, 'rgba(255, 255, 255, 0.16)');
+    grad.addColorStop(0.7, 'rgba(255, 255, 255, 0.03)');
     grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 256, 256);
@@ -123,10 +124,10 @@ function SceneContent({
 
     // Base Car Orientation: 3/4 front view (~0.22*PI)
     let carRotY = Math.PI * 0.22 + introRotOffset;
-    let camY = 1.45;
-    let camZ = 5.8;
-    let carPosY = 0;
-    let floorGlowOpacity = 0.38;
+    let camY = isMobile ? 1.55 : 1.45;
+    let camZ = isMobile ? 7.6 : 5.8;
+    let carPosY = isMobile ? 0.32 : 0;
+    let floorGlowOpacity = isMobile ? 0.22 : 0.38;
 
     if (!shouldReduceMotion) {
       if (scrollProg <= 0.4) {
@@ -134,31 +135,31 @@ function SceneContent({
         const p1 = scrollProg / 0.4;
         const easeP1 = 0.5 - Math.cos(p1 * Math.PI) / 2;
         carRotY = THREE.MathUtils.lerp(Math.PI * 0.22, Math.PI * 0.5, easeP1);
-        camZ = THREE.MathUtils.lerp(5.8, 5.0, easeP1);
-        camY = THREE.MathUtils.lerp(1.45, 1.35, easeP1);
-        floorGlowOpacity = THREE.MathUtils.lerp(0.38, 0.5, easeP1);
+        camZ = THREE.MathUtils.lerp(isMobile ? 7.6 : 5.8, isMobile ? 6.8 : 5.0, easeP1);
+        camY = THREE.MathUtils.lerp(isMobile ? 1.55 : 1.45, isMobile ? 1.45 : 1.35, easeP1);
+        floorGlowOpacity = THREE.MathUtils.lerp(isMobile ? 0.22 : 0.38, isMobile ? 0.32 : 0.5, easeP1);
       } else if (scrollProg <= 0.8) {
         // Phase 2 (0.4 -> 0.8): Rotate toward rear 3/4 view, floor glow intensifies
         const p2 = (scrollProg - 0.4) / 0.4;
         const easeP2 = 0.5 - Math.cos(p2 * Math.PI) / 2;
         carRotY = THREE.MathUtils.lerp(Math.PI * 0.5, Math.PI * 0.82, easeP2);
-        camZ = THREE.MathUtils.lerp(5.0, 5.4, easeP2);
-        camY = THREE.MathUtils.lerp(1.35, 1.48, easeP2);
-        floorGlowOpacity = THREE.MathUtils.lerp(0.5, 0.8, easeP2);
+        camZ = THREE.MathUtils.lerp(isMobile ? 6.8 : 5.0, isMobile ? 7.2 : 5.4, easeP2);
+        camY = THREE.MathUtils.lerp(isMobile ? 1.45 : 1.35, isMobile ? 1.55 : 1.48, easeP2);
+        floorGlowOpacity = THREE.MathUtils.lerp(isMobile ? 0.32 : 0.5, isMobile ? 0.45 : 0.8, easeP2);
       } else {
         // Phase 3 (0.8 -> 1.0): Camera pulls back, car descends slightly and releases into #models
         const p3 = (scrollProg - 0.8) / 0.2;
         carRotY = Math.PI * 0.82 + p3 * 0.15;
-        camZ = THREE.MathUtils.lerp(5.4, 6.4, p3);
-        camY = THREE.MathUtils.lerp(1.48, 1.75, p3);
-        carPosY = -p3 * 0.55;
-        floorGlowOpacity = THREE.MathUtils.lerp(0.8, 0.1, p3);
+        camZ = THREE.MathUtils.lerp(isMobile ? 7.2 : 5.4, isMobile ? 8.2 : 6.4, p3);
+        camY = THREE.MathUtils.lerp(isMobile ? 1.55 : 1.48, isMobile ? 1.80 : 1.75, p3);
+        carPosY = (isMobile ? 0.32 : 0) - p3 * 0.55;
+        floorGlowOpacity = THREE.MathUtils.lerp(isMobile ? 0.45 : 0.8, 0.1, p3);
       }
     }
 
     // Apply Camera transforms
     camera.position.set(0, camY, camZ);
-    camera.lookAt(0, 0.42, 0);
+    camera.lookAt(0, isMobile ? 0.18 : 0.42, 0);
 
     // Apply Car Group transforms
     if (carGroupRef.current) {
@@ -239,7 +240,7 @@ function SceneContent({
       {/* Hypercar Model Group */}
       <group
         ref={carGroupRef}
-        scale={isMobile ? 0.82 : 1.0}
+        scale={isMobile ? 0.65 : 1.0}
       >
         <CarModel
           accentColor={accentColor}
@@ -274,14 +275,14 @@ function SceneContent({
       )}
 
       {/* Soft Accent Glow Pool under the hypercar */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.003, 0]}>
-        <planeGeometry args={[8, 8]} />
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, isMobile ? 0.32 : 0.003, 0]}>
+        <planeGeometry args={[isMobile ? 6 : 8, isMobile ? 6 : 8]} />
         <meshBasicMaterial
           ref={floorGlowMaterialRef}
           map={floorGlowTexture}
           color={accentColor}
           transparent
-          opacity={0.38}
+          opacity={isMobile ? 0.22 : 0.38}
           blending={THREE.AdditiveBlending}
           depthWrite={false}
         />
@@ -335,6 +336,8 @@ export default function HeroScene({
         inset: 0,
         pointerEvents: 'none',
         touchAction: 'pan-y',
+        maskImage: 'linear-gradient(to bottom, transparent 0%, black 10%, black 85%, transparent 100%)',
+        WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 10%, black 85%, transparent 100%)',
       }}
       aria-hidden="true"
     >

@@ -15,6 +15,7 @@ import './Hero.css';
 
 // Register GSAP ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 // Lazy-load the heavy 3D Three.js canvas so initial page load stays lightweight
 const HeroScene = lazy(() => import('./HeroScene'));
